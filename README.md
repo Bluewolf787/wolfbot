@@ -1,6 +1,14 @@
 # WolfBot
 
----
+# Table of Contents
+1. [Preface](#preface)
+2. [Add WolfBot to your Discord server](#add-wolfbot-to-your-discord-server)
+3. [Features](#features)
+    1. [Commands](#commands)
+        1. [Administration](#administration)
+        2. [Moderation](#moderation)
+        3. [Management](#management)
+        4. [chat](#chat)
 
 ## Preface
 WolfBot is a JDA Discord Bot. It's on of my first bigger projects I've ever coded and "finished" (I will still work on it).
@@ -9,14 +17,11 @@ but the solutions I found and used were the best working for me. I learned and h
 purpose.
 
 ---
----
 
 ## Add WolfBot to your Discord server
 [[Click here]](https://discord.com/api/oauth2/authorize?client_id=346302891998576650&permissions=335113463&scope=bot)
 
-Visit also the WolfBot webpage [here]()
-
----
+Visit also the WolfBot webpage [here]() [COMING SOON]
 
 # Features
 
@@ -48,7 +53,7 @@ Command prefix: `-`
         This can be change on the [webpage]() or with the command `setpermission`.
 
         > ##### Note:
-        > The Bot is connected to an SQL database where roles will be saved. There are two types of roles a general role (`gengeral`) and a game role (`game`), which can be used for example on gaming community servers. 
+        > The Bot is connected to an SQL database where roles will be saved. There are two types of roles a general role (`general`) and a game role (`game`), which can be used for example on gaming community servers. 
 
         **What you can do with this command:**
         - Create or delete a role on the guild, which will also be added to the database or removed
