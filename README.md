@@ -41,10 +41,10 @@ Categories | [Administration](#administration) | [Management](#management) | [Mo
   **Alias:** ``setchannel``, ``channel``
   <br><br>
   **Usage:**
-  ```
+  ````php
   setchannel <command>           // Sets the current channel for the command
   setchannel <command> <channel> // Sets the specified channel for the command
-  ```
+  ````
 
 + ###### setpermission
   Sets the permission which are needed to execute a specific command
@@ -54,7 +54,7 @@ Categories | [Administration](#administration) | [Management](#management) | [Mo
   **Alias:** ``setpermission``, ``permission``
   <br><br>
   **Usage:**
-  ````
+  ````php
   setpermission <command> <permission> // Sets the specified permission for the command
   ````
 
@@ -68,7 +68,7 @@ Categories | [Administration](#administration) | [Management](#management) | [Mo
   **Alias:** ``manageroles``, ``mroles``
   <br><br>
   **Usage:**
-  ````
+  ````php
   // Roles can be created/added for two types: general or game
   // Roles can be created/added with optional one or two aliases 
   
@@ -89,7 +89,7 @@ Categories | [Administration](#administration) | [Management](#management) | [Mo
   **Alias:** ``role``
   <br><br>
   **Usage:**
-  ````
+  ````php
   // User Tag format: ExampleName#1234
   role add member:<usertag> role:<rolename>     // Adds the specified role from type general to a guild member
   role remove member:<usertag> role:<rolename>  // Reomves the spicified role from type general from a guild member
@@ -107,7 +107,7 @@ Categories | [Administration](#administration) | [Management](#management) | [Mo
   **Alias:** ``ban``
   <br><br>
   **Usage:**
-  ````
+  ````php
   // Get the user ID when entering \@Username in a Discord channel
   
   ban <userid> <reason> // Bans the specified user for the reason
@@ -121,7 +121,7 @@ Categories | [Administration](#administration) | [Management](#management) | [Mo
   **Alias:** ``unban``
   <br><br>
   **Usage:**
-  ````
+  ````php
   // Get the user ID when entering \@Username in a Discord channel
   
   unban <userid> // Revokes a ban of the specified user
@@ -135,7 +135,7 @@ Categories | [Administration](#administration) | [Management](#management) | [Mo
   **Alias:** ``kick``
   <br><br>
   **Usage:**
-  ````
+  ````php
   // Get the user ID when entering \@Username in a Discord channel
   
   kick <userid> <reason> // Kicks the specified user for the reason
@@ -149,7 +149,7 @@ Categories | [Administration](#administration) | [Management](#management) | [Mo
   **Alias:** ``clear``
   <br><br>
   **Usage:**
-  ````
+  ````php
   clear <amount of messages> // Deletes the specified amount of messages (between 2 and 100) 
   ````
 
@@ -163,7 +163,7 @@ Categories | [Administration](#administration) | [Management](#management) | [Mo
   **Alias:** ``help``
   <br><br>
   **Usage:**
-  ````
+  ````php
   help            // Send a command overview as private message
   help s          // Send a command overview of staff commands as private message
   help <command>  // Get more information about the spicified command
@@ -177,7 +177,7 @@ Categories | [Administration](#administration) | [Management](#management) | [Mo
   **Alias:** ``game``
   <br><br>
   **Usage:**
-  ````
+  ````php
   game <rolename> // Adds a role from type game to message sender
   
   game info       // List all game roles
@@ -191,7 +191,7 @@ Categories | [Administration](#administration) | [Management](#management) | [Mo
   **Alias:** ``music``, ``m``
   <br><br>
   **Usage:**
-  ````
+  ````php
   // Message sender has to be in a voice channel
   
   music play <link>  // Plays a songs from YouTube (Enter video link or name)
@@ -212,7 +212,7 @@ Categories | [Administration](#administration) | [Management](#management) | [Mo
   **Alias:** ``vote``
   <br><br>
   **Usage:**
-  ````
+  ````php
   vote create <title|answer option 1|answer option 2|...>   // Creates a new poll with specified title and answer options
   vote close                                                // Closes the current poll
   vote v <number>                                           // Votes for answer option
@@ -227,7 +227,7 @@ Categories | [Administration](#administration) | [Management](#management) | [Mo
   **Alias:** ``avatar``
   <br><br>
   **Usage:**
-  ````
+  ````php
   // Usertag format: ExampleName#1234
   
   avatar <usertag>   // Gets the avatar URL from a user
