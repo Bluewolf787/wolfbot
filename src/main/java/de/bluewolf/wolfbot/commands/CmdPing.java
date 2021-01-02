@@ -25,7 +25,7 @@ public class CmdPing implements Command
         else
             permission = Permission.ADMINISTRATOR;
 
-        return BotSettings.PERMISSIONS(event, permission, command);
+        return BotSettings.checkPermissions(event, permission, command);
     }
 
     @Override

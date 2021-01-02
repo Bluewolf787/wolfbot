@@ -1,22 +1,13 @@
 package de.bluewolf.wolfbot.core;
 
-import de.bluewolf.wolfbot.commands.administration.CmdBot;
-import de.bluewolf.wolfbot.commands.management.CmdManageRoles;
-import de.bluewolf.wolfbot.commands.administration.CmdNews;
-import de.bluewolf.wolfbot.commands.management.CmdRole;
-import de.bluewolf.wolfbot.commands.administration.CmdSettings;
-import de.bluewolf.wolfbot.commands.chat.CmdVote;
-import de.bluewolf.wolfbot.commands.chat.CmdGame;
-import de.bluewolf.wolfbot.commands.chat.CmdHelp;
-import de.bluewolf.wolfbot.commands.moderation.CmdBan;
-import de.bluewolf.wolfbot.commands.moderation.CmdClear;
-import de.bluewolf.wolfbot.commands.moderation.CmdKick;
-import de.bluewolf.wolfbot.commands.moderation.CmdUnban;
+import de.bluewolf.wolfbot.commands.bot_administration.*;
+import de.bluewolf.wolfbot.commands.chat.*;
+import de.bluewolf.wolfbot.commands.management.*;
+import de.bluewolf.wolfbot.commands.moderation.*;
 import de.bluewolf.wolfbot.listener.*;
 import de.bluewolf.wolfbot.settings.BotSettings;
 import de.bluewolf.wolfbot.utils.DatabaseHelper;
 import de.bluewolf.wolfbot.settings.Secret;
-import de.bluewolf.wolfbot.commands.chat.CmdMusic;
 import de.bluewolf.wolfbot.commands.CmdPing;
 import de.bluewolf.wolfbot.utils.Timer;
 import net.dv8tion.jda.api.JDA;
@@ -68,10 +59,12 @@ public class Bot
     {
         // | REGISTER COMMANDS for the CommandHandler | //
 
-        // -- administrator
+        // -- bot administrator
         CommandHandler.commands.put("settings", new CmdSettings());
         CommandHandler.commands.put("bot", new CmdBot());
         CommandHandler.commands.put("news", new CmdNews());
+
+        // -- guild administration
 
         // -- moderation
         CommandHandler.commands.put("clear", new CmdClear());

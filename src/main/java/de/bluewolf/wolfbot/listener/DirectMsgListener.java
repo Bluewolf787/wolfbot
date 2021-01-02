@@ -17,6 +17,8 @@ import java.util.Random;
 public class DirectMsgListener extends ListenerAdapter
 {
 
+    private static final ConsoleColors colors = new ConsoleColors();
+
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent event)
     {
 
@@ -37,8 +39,8 @@ public class DirectMsgListener extends ListenerAdapter
         {
             System.out.println(
                     CustomMsg.INFO_PREFIX + "Received a private message: "
-                            + ConsoleColors.BLACK + "'" + ConsoleColors.PURPLE + receivedMsg + ConsoleColors.BLACK + "' " + ConsoleColors.RESET
-                            + "at " + ConsoleColors.GREEN + java.time.LocalDateTime.now() + ConsoleColors.RESET
+                            + colors.BLACK + "'" + colors.PURPLE + receivedMsg + colors.BLACK + "' " + colors.RESET
+                            + "at " + CustomMsg.TIMESTAMP
             );
 
             int answer = new Random().nextInt(msgs.length);

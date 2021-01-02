@@ -491,7 +491,7 @@ public class CmdManageRoles implements Command
         else
             permission = Permission.MANAGE_ROLES;
 
-        return BotSettings.PERMISSIONS(event, permission, command);
+        return BotSettings.checkPermissions(event, permission, command);
     }
 
     @Override

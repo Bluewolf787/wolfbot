@@ -83,7 +83,7 @@ public class CmdGame implements Command
         else
             permission = Permission.MESSAGE_WRITE;
 
-        return BotSettings.PERMISSIONS(event, permission, command);
+        return BotSettings.checkPermissions(event, permission, command);
     }
 
     @Override
@@ -149,7 +149,7 @@ public class CmdGame implements Command
     @Override
     public String help()
     {
-        return "Use ``" + BotSettings.PREFIX + "game <option>``. For more information use ``" + BotSettings.PREFIX + "help``.";
+        return "Use ``" + BotSettings.PREFIX + "game <role>``. For more information use ``" + BotSettings.PREFIX + "help``.";
     }
 
 }

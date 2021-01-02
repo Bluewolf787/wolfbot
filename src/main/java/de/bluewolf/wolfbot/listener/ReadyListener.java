@@ -11,9 +11,14 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ReadyListener extends ListenerAdapter
 {
+
+    private static final ConsoleColors colors = new ConsoleColors();
 
     public void onReady(ReadyEvent event)
     {
@@ -21,8 +26,8 @@ public class ReadyListener extends ListenerAdapter
 
         out.append("\n============================================================\n");
 
-        out.append(CustomMsg.INFO_PREFIX + "Logged in as ").append(ConsoleColors.YELLOW_BOLD).append(event.getJDA().getSelfUser().getAsTag()).append(ConsoleColors.RESET)
-                .append(" at ").append(ConsoleColors.GREEN).append(java.time.LocalDateTime.now()).append(ConsoleColors.RESET)
+        out.append(CustomMsg.INFO_PREFIX).append("Logged in as ").append(colors.YELLOW_BOLD).append(event.getJDA().getSelfUser().getAsTag()).append(colors.RESET)
+                .append(" at ").append(colors.GREEN).append(java.time.LocalDateTime.now()).append(colors.RESET)
                 .append(". This Bot is running on following servers: \n\n");
 
         // List all guilds the Bot is running on
@@ -33,9 +38,7 @@ public class ReadyListener extends ListenerAdapter
             String guildRegion = guild.getRegionRaw();
             int guildMember = guild.getMemberCount();
 
-            out.append("\t" + ConsoleColors.CYAN).append(guildName).append(ConsoleColors.RESET)
-                    .append(" (").append(ConsoleColors.CYAN).append(guildId).append(ConsoleColors.RESET)
-                    .append(") \n\t---------------------------- \n");
+            out.append("\t").append(CustomMsg.GUILD_NAME(guildName, guildId)).append("\n\t---------------------------- \n");
 
             // Check if the guild already exists in the table BotStats
             ResultSet guildFromBotStats = DatabaseHelper.query("SELECT GuildId FROM botstats WHERE GuildId = '" + guildId + "';");
@@ -58,6 +61,32 @@ public class ReadyListener extends ListenerAdapter
                                 "UPDATE botstats SET GuildName = '" + guildName + "', Member = " + guildMember + "," +
                                         " Region = '" + guildRegion + "', Available = 1 WHERE GuildId = '" + guildId + "';"
                         );
+                    }
+
+                    // -- Add new commands with the default permissions the the Permissions table //
+
+                    // Get all commands from Permissions table
+                    ResultSet getGuildCommandPermission = DatabaseHelper.query("SELECT Cmd FROM Permissions WHERE GuildId = '" + guildId + "';");
+
+                    // Put all commands from Permissions table in the ArrayList commands
+                    List<String> commands = new ArrayList<>();
+                    while (getGuildCommandPermission.next())
+                    {
+                        commands.add(getGuildCommandPermission.getString("Cmd"));
+                    }
+
+                    // Copy all commands with the permissions in the new HashMap newCommandsWithPermissions
+                    HashMap<String, Integer> newCommandsWithPermissions = new HashMap<>(BotSettings.commandsWithPermissions);
+                    // Remove all entries from the new HashMap, which are in the commands ArrayList
+                    for (String command : commands)
+                    {
+                        newCommandsWithPermissions.remove(command);
+                    }
+                    // Check if the new HashMap newCommandsWithPermissions is Empty
+                    if (!newCommandsWithPermissions.isEmpty())
+                    {
+                        // If not add the new commands with permissions to the Permissions table
+                        DatabaseHelper.insertGuildIntoPermissionsTable(guildId, newCommandsWithPermissions);
                     }
                 }
                 else
@@ -85,19 +114,26 @@ public class ReadyListener extends ListenerAdapter
                     DatabaseHelper.insertGuildIntoPermissionsTable(guildId, BotSettings.commandsWithPermissions);
                 }
             } catch (SQLException sqlException) {
-                CustomMsg.ERROR("SQL exception while trying to update the table BotStats. Guild ID: " + ConsoleColors.CYAN + guildId + ConsoleColors.RESET);
+                CustomMsg.ERROR("SQL exception while trying to update the database. Occurred while updating the guild: " + colors.CYAN + guildId + colors.RESET);
                 sqlException.printStackTrace();
+            }
+
+            // Check if the staff role exists, when not create
+            try {
+                BotSettings.createStaffRole(guild, guildId);
+            } catch (SQLException sqlException) {
+                CustomMsg.ERROR("Failed to create Staff role on the guild " + CustomMsg.GUILD_NAME(guildName, guildId));
             }
         }
 
         // Print the total number of guilds the Bot is running on
-        out.append(ConsoleColors.BOLD + "\tTotal: ").append(event.getGuildTotalCount()).append(ConsoleColors.RESET);
+        out.append(colors.BOLD).append("\tTotal: ").append(event.getGuildTotalCount()).append(colors.RESET);
 
         out.append("\n============================================================\n");
 
         // List available and unavailable guilds
-        out.append(CustomMsg.INFO_PREFIX + "Available guilds: ").append(ConsoleColors.GREEN_BOLD).append(event.getGuildAvailableCount()).append(ConsoleColors.RESET)
-                .append(" | ").append(ConsoleColors.RED_BOLD).append(event.getGuildUnavailableCount()).append(ConsoleColors.RESET);
+        out.append(CustomMsg.INFO_PREFIX).append("Available guilds: ").append(colors.GREEN_BOLD).append(event.getGuildAvailableCount()).append(colors.RESET)
+                .append(" | ").append(colors.RED_BOLD).append(event.getGuildUnavailableCount()).append(colors.RESET);
 
         out.append("\n============================================================\n");
 

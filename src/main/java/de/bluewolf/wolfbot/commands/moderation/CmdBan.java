@@ -26,7 +26,7 @@ public class CmdBan implements Command
         else
             permission = Permission.BAN_MEMBERS;
 
-        return BotSettings.PERMISSIONS(event, permission, command);
+        return BotSettings.checkPermissions(event, permission, command);
     }
 
     @Override

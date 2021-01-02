@@ -1,4 +1,4 @@
-package de.bluewolf.wolfbot.commands.administration;
+package de.bluewolf.wolfbot.commands.bot_administration;
 
 import de.bluewolf.wolfbot.commands.Command;
 import de.bluewolf.wolfbot.settings.BotSettings;
@@ -62,22 +62,22 @@ public class CmdBot implements Command
 
             if (listAllGuilds && guildAvailable)
             {
-                guildsMessage.append("```bash\n\"- ").append(guildNames.get(i)).append(" (").append(guildIds.get(i))
-                        .append(")\"\nMember: ").append(guildMembers.get(i)).append("\nRegion: ").append(guildRegions.get(0)).append("\n```");
+                guildsMessage.append("```bash\n\"- ").append(CustomMsg.GUILD_NAME(guildNames.get(i), guildIds.get(i)))
+                        .append("\"\nMember: ").append(guildMembers.get(i)).append("\nRegion: ").append(guildRegions.get(0)).append("\n```");
             }
             else if (listAllGuilds)
             {
-                guildsMessage.append("```diff\n- ").append(guildNames.get(i)).append(" (").append(guildIds.get(i))
-                        .append(")\nMember: ").append(guildMembers.get(i)).append("\nRegion: ").append(guildRegions.get(0)).append("\n```");
+                guildsMessage.append("```diff\n- ").append(CustomMsg.GUILD_NAME(guildNames.get(i), guildIds.get(i)))
+                        .append("\nMember: ").append(guildMembers.get(i)).append("\nRegion: ").append(guildRegions.get(0)).append("\n```");
             }
 
             if (!listAllGuilds && guildAvailable)
             {
-                guildsMessage.append("```bash\n\"- ").append(guildNames.get(i)).append(" (").append(guildIds.get(i)).append(")\"\n```");
+                guildsMessage.append("```bash\n\"- ").append(CustomMsg.GUILD_NAME(guildNames.get(i), guildIds.get(i))).append("\"\n```");
             }
             else if (!listAllGuilds)
             {
-                guildsMessage.append("```diff\n- ").append(guildNames.get(i)).append(" (").append(guildIds.get(i)).append(")\n```");
+                guildsMessage.append("```diff\n- ").append(CustomMsg.GUILD_NAME(guildNames.get(i), guildIds.get(i))).append("\n```");
             }
         }
 

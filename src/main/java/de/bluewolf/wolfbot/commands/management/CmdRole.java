@@ -1,7 +1,6 @@
 package de.bluewolf.wolfbot.commands.management;
 
 import de.bluewolf.wolfbot.commands.Command;
-import de.bluewolf.wolfbot.commands.management.CmdManageRoles;
 import de.bluewolf.wolfbot.settings.BotSettings;
 import de.bluewolf.wolfbot.utils.CustomMsg;
 import de.bluewolf.wolfbot.utils.DatabaseHelper;
@@ -220,7 +219,7 @@ public class CmdRole implements Command
         else
             permission = Permission.MANAGE_ROLES;
 
-        return BotSettings.PERMISSIONS(event, permission, command);
+        return BotSettings.checkPermissions(event, permission, command);
     }
 
     @Override

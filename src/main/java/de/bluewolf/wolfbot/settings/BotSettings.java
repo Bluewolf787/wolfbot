@@ -1,6 +1,7 @@
 package de.bluewolf.wolfbot.settings;
 
 import de.bluewolf.wolfbot.utils.CustomMsg;
+import de.bluewolf.wolfbot.utils.DatabaseHelper;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
@@ -8,9 +9,10 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.util.ArrayList;
+import java.awt.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author Bluewolf787
@@ -22,14 +24,40 @@ public class BotSettings
 {
 
     // -- GENERAL SETTINGS -- //
-    public static final String PREFIX = "-";
-    public static final String VERSION = "SNAPSHOT-2021.1";
+    public static final String PREFIX = "!"; // Command prefix
+    public static final String VERSION = "SNAPSHOT-2021.1"; // Current version of the bot
 
-    public static String CUSTOM_MASSAGE = "狼機器人";
+    public static String CUSTOM_MASSAGE = "狼機器人"; // Message, which will be shown in the status
 
-    public static OnlineStatus STATUS = OnlineStatus.ONLINE;
-    public static Activity ACTIVITY = Activity.playing(VERSION + " | -help | " + CUSTOM_MASSAGE);
+    public static OnlineStatus STATUS = OnlineStatus.ONLINE; // Online status
+    public static Activity ACTIVITY = Activity.playing(VERSION + " | -help | " + CUSTOM_MASSAGE); // Playing status
 
+    // All Bot commands with permissions
+    public static HashMap<String, Integer> commandsWithPermissions = new HashMap<String, Integer>();
+
+    // -- CREATE STAFF ROLE -- //
+    public static void createStaffRole(Guild guild, String guildId) throws SQLException
+    {
+        ResultSet getRoles = DatabaseHelper.query("SELECT Role FROM Roles WHERE GuildId = '" + guildId + "' AND Role = 'Staff';");
+
+        if (!getRoles.next())
+        {
+            DatabaseHelper.update("INSERT INTO Roles (GuildId, Role, Type) VALUES ('" + guildId + "', 'Staff', 'general');");
+            guild.createRole()
+                    .setColor(Color.YELLOW)
+                    .setHoisted(true)
+                    .setMentionable(true)
+                    .setName("Staff")
+                    .setPermissions(
+                            Permission.MESSAGE_MANAGE, Permission.MANAGE_ROLES, Permission.BAN_MEMBERS,
+                            Permission.KICK_MEMBERS, Permission.VIEW_CHANNEL, Permission.MESSAGE_HISTORY,
+                            Permission.MESSAGE_READ, Permission.MESSAGE_WRITE, Permission.MESSAGE_ADD_REACTION,
+                            Permission.MESSAGE_ATTACH_FILES, Permission.VOICE_CONNECT, Permission.VOICE_SPEAK,
+                            Permission.VOICE_DEAF_OTHERS, Permission.VOICE_MUTE_OTHERS, Permission.VOICE_MOVE_OTHERS
+                    ).queue();
+
+        }
+    }
 
     // -- STATUS AND PERMISSION SETTINGS -- //
     public static boolean DOWNTIME = false;
@@ -37,11 +65,9 @@ public class BotSettings
     public static Activity RESTART_ACTIVITY = Activity.playing("RESTARTING");
     public static Activity STOP_ACTIVITY = Activity.playing("STOPPING");
 
-    // All Bot commands with permissions
-    public static HashMap<String, Integer> commandsWithPermissions = new HashMap<String, Integer>();
 
     // -- PERMISSION/STATUS CHECK -- //
-    public static boolean PERMISSIONS(MessageReceivedEvent event, Permission permission, String cmd)
+    public static boolean checkPermissions(MessageReceivedEvent event, Permission permission, String cmd)
     {
         Member member = event.getMember();
         String author = event.getAuthor().getId();

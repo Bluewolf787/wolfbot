@@ -111,7 +111,7 @@ public class DatabaseHelper
                         "CREATE TABLE IF NOT EXISTS `Permissions` "
                                 + "(`GuildId` varchar(20) NOT NULL, "
                                 + "`Cmd` varchar(20) NOT NULL, "
-                                + "`Permission` varchar(20) NOT NULL, "
+                                + "`Permission` int NOT NULL, "
                                 + "PRIMARY KEY(`GuildId`, `Cmd`));"
                 );
                 CustomMsg.INFO("Created the table 'Permissions' (SQL)");
@@ -121,53 +121,11 @@ public class DatabaseHelper
         }
     }
 
-    /*
-    // Create Guild bases game roles table
-    public static void createGameRolesTable(String guildId)
-    {
-        if (isConnected())
-        {
-            try {
-                statement = connection.createStatement();
-                statement.executeUpdate(
-                        "CREATE TABLE IF NOT EXISTS " + guildId + "GameRoles "
-                        + "(`guildId` varchar(20) NOT NULL, "
-                        + "`role` varchar(100) NOT NULL UNIQUE, "
-                        + "`alias1` varchar(100) UNIQUE, "
-                        + "`alias2` varchar(50) UNIQUE, "
-                        + "PRIMARY KEY(guildId, role));"
-                );
-            } catch (SQLException sqlException) {
-                CustomMsg.ERROR("Failed to create 'GameRoles' table for the Guild '" + guildId + "' (SQL)");
-            }
+    // TODO Create channel table
 
-            CustomMsg.INFO("Created table 'GameRoles' for the Guild '" + guildId + "' (SQL)");
-        }
-    }
+    // TODO Create Moderation tabel
 
-    // Create Guild bases general roles table
-    public static void createGeneralRolesTable(String guildId)
-    {
-        if (isConnected())
-        {
-            try {
-                statement = connection.createStatement();
-                statement.executeUpdate(
-                        "CREATE TABLE IF NOT EXISTS " + guildId + "GeneralRoles "
-                                + "(`guildId` varchar(20) NOT NULL, "
-                                + "`role` varchar(100) NOT NULL UNIQUE, "
-                                + "`alias1` varchar(100) UNIQUE, "
-                                + "`alias2` varchar(50) UNIQUE, "
-                                + "PRIMARY KEY(guildId, role));"
-                );
-            } catch (SQLException sqlException) {
-                CustomMsg.ERROR("Failed to create 'GeneralRoles' table for the Guild '" + guildId + "' (SQL)");
-            }
-
-            CustomMsg.INFO("Created table 'GeneralRoles' for the Guild '" + guildId + "' (SQL)");
-        }
-    }
-    */
+    // TODO Create leaderboard table
 
     // Delete table
     public static void deleteTable(String table)

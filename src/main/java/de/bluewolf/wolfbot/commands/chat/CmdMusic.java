@@ -155,7 +155,7 @@ public class CmdMusic implements Command
         else
             permission = Permission.VOICE_CONNECT;
 
-        return BotSettings.PERMISSIONS(event, permission, command);
+        return BotSettings.checkPermissions(event, permission, command);
     }
 
     @Override
@@ -265,7 +265,7 @@ public class CmdMusic implements Command
                             new EmbedBuilder()
                                     .setColor(Color.MAGENTA)
                                     .setDescription(
-                                            "**The queue will now shuffle!**"
+                                            "The queue will now shuffle!"
                                     )
                                     .build()
                     ).queue();
@@ -292,7 +292,8 @@ public class CmdMusic implements Command
                     event.getTextChannel().sendMessage(
                             new EmbedBuilder()
                                     .setColor(Color.MAGENTA)
-                                    .setDescription("**CURRENT TRACK INFO**")
+                                    .setTitle("Current Track Info")
+                                    .setDescription("")
                                     .addField("Title", info.title, false)
                                     .addField("Duration", "`[ " + getTimestamp(track.getPosition()) + "/ " + getTimestamp(track.getDuration()) + " ]`", false)
                                     .addField("Author", info.author, false)
@@ -408,7 +409,7 @@ public class CmdMusic implements Command
     @Override
     public String help()
     {
-        return "Use ``" + BotSettings.PREFIX + "music <option>``. For more information use ``" + BotSettings.PREFIX + "help s``.";
+        return "Use ``" + BotSettings.PREFIX + "music <option>``. For more information use ``" + BotSettings.PREFIX + "help``.";
     }
 
 }

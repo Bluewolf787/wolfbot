@@ -17,18 +17,25 @@ import java.awt.*;
 public class CustomMsg
 {
 
-    // PREFIXES
-    public static final String INFO_PREFIX =  ConsoleColors.BLACK + "[" + ConsoleColors.YELLOW_BOLD + "INFO" + ConsoleColors.BLACK + "] " + ConsoleColors.RESET;
-    public static final String NO_PERM_PREFIX = ConsoleColors.BLACK + "[" + ConsoleColors.RED_BOLD + "NO PERM" + ConsoleColors.BLACK + "] " + ConsoleColors.RESET;
-    public static final String ERROR_PREFIX = ConsoleColors.BLACK + "[" + ConsoleColors.RED_BOLD + "ERROR" + ConsoleColors.BLACK + "] " + ConsoleColors.RESET;
+    private static final ConsoleColors colors = new ConsoleColors();
 
-    public static final String TIMESTAMP = ConsoleColors.GREEN + java.time.LocalDateTime.now() + ConsoleColors.RESET;
+    // PREFIXES
+    public static final String INFO_PREFIX =  colors.BLACK + "[" + colors.YELLOW_BOLD + "INFO" + colors.BLACK + "] " + colors.RESET;
+    public static final String NO_PERM_PREFIX = colors.BLACK + "[" + colors.RED_BOLD + "NO PERM" + colors.BLACK + "] " + colors.RESET;
+    public static final String ERROR_PREFIX = colors.BLACK + "[" + colors.RED_BOLD + "ERROR" + colors.BLACK + "] " + colors.RESET;
+
+    public static final String TIMESTAMP = colors.GREEN + java.time.LocalDateTime.now() + colors.RESET;
+
+    public static String GUILD_NAME(String guildName, String guildId)
+    {
+        return colors.CYAN + guildName + colors.RESET + " (" + colors.CYAN + guildId + ")" + colors.RESET;
+    }
 
     // Info
     public static void INFO(String info)
     {
         System.out.println(
-                INFO_PREFIX + info + ConsoleColors.BOLD + " - " + ConsoleColors.RESET
+                INFO_PREFIX + info + colors.BOLD + " - " + colors.RESET
                 + TIMESTAMP
         );
     }
@@ -43,9 +50,9 @@ public class CustomMsg
         ).queue();
 
         System.out.println(
-                INFO_PREFIX + "Command " + ConsoleColors.BLACK + "'" + ConsoleColors.RED + BotSettings.PREFIX + cmd + ConsoleColors.BLACK + "' " + ConsoleColors.RESET
-                + "was performed with info: " + ConsoleColors.YELLOW + info + ConsoleColors.RESET
-                + ConsoleColors.CYAN + " (" + event.getGuild().getName() + ") " + ConsoleColors.RESET + "at " + TIMESTAMP
+                INFO_PREFIX + "Command " + colors.BLACK + "'" + colors.RED + BotSettings.PREFIX + cmd + colors.BLACK + "' " + colors.RESET
+                + "was performed with info: " + colors.YELLOW + info + colors.RESET
+                + colors.CYAN + " (" + event.getGuild().getName() + ") " + colors.RESET + "at " + TIMESTAMP
         );
     }
 
@@ -62,9 +69,9 @@ public class CustomMsg
         ).queue();
 
         System.out.println(
-                NO_PERM_PREFIX + "Command " + ConsoleColors.BLACK + "'" + ConsoleColors.RED + BotSettings.PREFIX + cmd + ConsoleColors.BLACK + "' " + ConsoleColors.RESET
-                        + "was performed with " + ConsoleColors.RED + "no permissions " + ConsoleColors.RESET
-                        + ConsoleColors.CYAN + "(" + event.getGuild().getName() + ") " + ConsoleColors.RESET
+                NO_PERM_PREFIX + "Command " + colors.BLACK + "'" + colors.RED + BotSettings.PREFIX + cmd + colors.BLACK + "' " + colors.RESET
+                        + "was performed with " + colors.RED + "no permissions " + colors.RESET
+                        + colors.CYAN + "(" + event.getGuild().getName() + ") " + colors.RESET
                         + "at " + TIMESTAMP
         );
     }
@@ -73,8 +80,8 @@ public class CustomMsg
     public static void COMMAND_EXECUTED(MessageReceivedEvent event, String cmd)
     {
         System.out.println(
-                INFO_PREFIX + "Command " + ConsoleColors.BLACK + "'" + ConsoleColors.RED + BotSettings.PREFIX + cmd + ConsoleColors.BLACK + "' " + ConsoleColors.RESET
-                        + "was executed " + ConsoleColors.CYAN + "(" + event.getGuild().getName() + ") " + ConsoleColors.RESET
+                INFO_PREFIX + "Command " + colors.BLACK + "'" + colors.RED + BotSettings.PREFIX + cmd + colors.BLACK + "' " + colors.RESET
+                        + "was executed " + colors.CYAN + "(" + event.getGuild().getName() + ") " + colors.RESET
                         + "at " + TIMESTAMP
         );
     }
@@ -90,9 +97,9 @@ public class CustomMsg
         ).queue();
 
         System.out.println(
-                ERROR_PREFIX + "Command " + ConsoleColors.BLACK + "'" + ConsoleColors.RED + BotSettings.PREFIX + cmd + ConsoleColors.BLACK + "' " + ConsoleColors.RESET
-                        + "was performed while error: '" + ConsoleColors.RED + error + ConsoleColors.RESET + "' occurred! "
-                        + ConsoleColors.CYAN + "(" + event.getGuild().getName() + ") " + ConsoleColors.RESET
+                ERROR_PREFIX + "Command " + colors.BLACK + "'" + colors.RED + BotSettings.PREFIX + cmd + colors.BLACK + "' " + colors.RESET
+                        + "was performed while error: '" + colors.RED + error + colors.RESET + "' occurred! "
+                        + colors.CYAN + "(" + event.getGuild().getName() + ") " + colors.RESET
                         + "Performed at " + TIMESTAMP
         );
     }
@@ -100,7 +107,7 @@ public class CustomMsg
     public static void ERROR(String error)
     {
         System.out.println(
-                ERROR_PREFIX + error + ConsoleColors.BOLD + " - " + ConsoleColors.RESET
+                ERROR_PREFIX + error + colors.BOLD + " - " + colors.RESET
                 + TIMESTAMP
         );
     }
@@ -110,7 +117,8 @@ public class CustomMsg
     {
         event.getTextChannel().sendMessage(
                 new EmbedBuilder()
-                        .setColor(Color.GREEN)
+                        .setColor(new Color(0xdf1196))
+                        .setTitle("Command Help")
                         .setDescription(content)
                         .build()
         ).queue();
@@ -127,8 +135,8 @@ public class CustomMsg
         ).queue();
 
         System.out.println(
-                ERROR_PREFIX + "Unknown command: '" + ConsoleColors.RED + cmd + "' " + ConsoleColors.RESET
-                        + ConsoleColors.CYAN + "(" + event.getGuild().getName() + ") " + ConsoleColors.RESET
+                ERROR_PREFIX + "Unknown command: '" + colors.RED + cmd + "' " + colors.RESET
+                        + colors.CYAN + "(" + event.getGuild().getName() + ") " + colors.RESET
                         + "performed at " + TIMESTAMP
         );
     }

@@ -1,7 +1,9 @@
 package de.bluewolf.wolfbot.listener;
 
+import de.bluewolf.wolfbot.settings.BotSettings;
 import de.bluewolf.wolfbot.utils.CustomMsg;
 import de.bluewolf.wolfbot.utils.DatabaseHelper;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.guild.GuildAvailableEvent;
 import net.dv8tion.jda.api.events.guild.GuildUnavailableEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -18,10 +20,10 @@ import java.sql.SQLException;
 public class GuildAvailableListener extends ListenerAdapter
 {
 
-
     public void onGuildAvailable(GuildAvailableEvent event)
     {
-        String guildId = event.getGuild().getId();
+        Guild guild = event.getGuild();
+        String guildId = guild.getId();
 
         ResultSet guildAvailable = DatabaseHelper.query("SELECT Available FROM BotStats WHERE GuildId = '" + guildId + "';");
 
@@ -39,6 +41,13 @@ public class GuildAvailableListener extends ListenerAdapter
         catch (SQLException sqlException)
         {
             sqlException.printStackTrace();
+        }
+
+        // Create Staff role on guild and add to DB, when not exists
+        try {
+            BotSettings.createStaffRole(guild, guildId);
+        } catch (SQLException sqlException) {
+            CustomMsg.ERROR("Failed to create Staff role on the guild " + CustomMsg.GUILD_NAME(guild.getName(), guildId));
         }
     }
 

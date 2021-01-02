@@ -27,7 +27,7 @@ public class CmdKick implements Command
         else
             permission = Permission.KICK_MEMBERS;
 
-        return BotSettings.PERMISSIONS(event, permission, command);
+        return BotSettings.checkPermissions(event, permission, command);
     }
 
     @Override

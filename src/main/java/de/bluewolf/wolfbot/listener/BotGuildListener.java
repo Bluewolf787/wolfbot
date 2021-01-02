@@ -12,6 +12,8 @@ import net.dv8tion.jda.api.events.guild.UnavailableGuildJoinedEvent;
 import net.dv8tion.jda.api.events.guild.UnavailableGuildLeaveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.sql.SQLException;
+
 /**
  * @author Bluewolf787
  * @project wolfbot
@@ -21,25 +23,34 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 public class BotGuildListener extends ListenerAdapter
 {
 
+    private static final ConsoleColors colors = new ConsoleColors();
+
     public void onGuildJoin(GuildJoinEvent event)
     {
         Guild guild = event.getGuild();
-        String gName = guild.getName();
-        String gId  = guild.getId();
+        String guildName = guild.getName();
+        String guildId  = guild.getId();
 
         CustomMsg.INFO(
-                "Joined new guild " + ConsoleColors.CYAN + gName + ConsoleColors.RESET
-                + " (" + ConsoleColors.CYAN + gId + ConsoleColors.RESET + ")"
+                "Joined new guild " + colors.CYAN + guildName + colors.RESET
+                + " (" + colors.CYAN + guildId + colors.RESET + ")"
         );
 
         // Add guild to BotStats table in DB
         DatabaseHelper.update(
                 "INSERT INTO botstats (GuildId, GuildName, Member, Region, Available, Password) VALUES" +
-                " ('" + gId + "', '" + gName + "', "+ guild.getMemberCount() + ", '" + guild.getRegionRaw() + "', 1, '" + PasswordGenerator.generatePassword() + "');"
+                " ('" + guildId + "', '" + guildName + "', "+ guild.getMemberCount() + ", '" + guild.getRegionRaw() + "', 1, '" + PasswordGenerator.generatePassword() + "');"
         );
 
         // Add guild to permissions table with default permissions
         DatabaseHelper.insertGuildIntoPermissionsTable(guild.getId(), BotSettings.commandsWithPermissions);
+
+        // Create Staff role on guild and add to DB
+        try {
+            BotSettings.createStaffRole(guild, guildId);
+        } catch (SQLException sqlException) {
+            CustomMsg.ERROR("Failed to create Staff role on the guild " + CustomMsg.GUILD_NAME(guildName, guildId));
+        }
     }
 
     public void onUnavailableGuildJoined(UnavailableGuildJoinedEvent event)
@@ -48,8 +59,8 @@ public class BotGuildListener extends ListenerAdapter
         String guildId = event.getGuildId();
 
         CustomMsg.INFO(
-                "Joined new guild " + ConsoleColors.CYAN + "Unavailable" + ConsoleColors.RESET
-                        + " (" + ConsoleColors.CYAN + guildId + ConsoleColors.RESET + ")"
+                "Joined new guild " + colors.CYAN + "Unavailable" + colors.RESET
+                        + " (" + colors.CYAN + guildId + colors.RESET + ")"
         );
 
         // Create guild based tables in DB
@@ -66,8 +77,8 @@ public class BotGuildListener extends ListenerAdapter
         String guildId  = guild.getId();
 
         CustomMsg.INFO(
-                "Left guild " + ConsoleColors.CYAN + gName + ConsoleColors.RESET
-                        + " (" + ConsoleColors.CYAN + guildId + ConsoleColors.RESET + ")"
+                "Left guild " + colors.CYAN + gName + colors.RESET
+                        + " (" + colors.CYAN + guildId + colors.RESET + ")"
         );
 
         // Remove guild from BotStats table
@@ -82,8 +93,8 @@ public class BotGuildListener extends ListenerAdapter
         String guildId  = event.getGuildId();
 
         CustomMsg.INFO(
-                "Left guild " + ConsoleColors.CYAN + "Unavailable" + ConsoleColors.RESET
-                        + " (" + ConsoleColors.CYAN + guildId + ConsoleColors.RESET + ")"
+                "Left guild " + colors.CYAN + "Unavailable" + colors.RESET
+                        + " (" + colors.CYAN + guildId + colors.RESET + ")"
         );
 
         // Remove guild from BotStats table

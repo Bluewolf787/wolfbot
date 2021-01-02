@@ -42,7 +42,7 @@ public class CmdClear implements Command
         else
             permission = Permission.MESSAGE_MANAGE;
 
-        return BotSettings.PERMISSIONS(event, permission, command);
+        return BotSettings.checkPermissions(event, permission, command);
     }
 
     @Override

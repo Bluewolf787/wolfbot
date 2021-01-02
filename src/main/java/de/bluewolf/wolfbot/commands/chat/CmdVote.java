@@ -349,7 +349,7 @@ public class CmdVote implements Command, Serializable
         else
             permission = Permission.MESSAGE_WRITE;
 
-        return BotSettings.PERMISSIONS(event, permission, command);
+        return BotSettings.checkPermissions(event, permission, command);
     }
 
     @Override

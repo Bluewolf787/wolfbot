@@ -1,4 +1,4 @@
-package de.bluewolf.wolfbot.commands.administration;
+package de.bluewolf.wolfbot.commands.bot_administration;
 
 import de.bluewolf.wolfbot.commands.Command;
 import de.bluewolf.wolfbot.settings.BotSettings;
@@ -27,7 +27,7 @@ public class CmdNews implements Command {
         else
             permission = Permission.ADMINISTRATOR;
 
-        return BotSettings.PERMISSIONS(event, permission, command);
+        return BotSettings.checkPermissions(event, permission, command);
     }
 
     @Override

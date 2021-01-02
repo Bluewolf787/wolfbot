@@ -1,4 +1,4 @@
-package de.bluewolf.wolfbot.commands.administration;
+package de.bluewolf.wolfbot.commands.bot_administration;
 
 import de.bluewolf.wolfbot.commands.Command;
 import de.bluewolf.wolfbot.settings.BotSettings;
@@ -16,6 +16,8 @@ import java.util.TimerTask;
 
 public class CmdSettings implements Command
 {
+
+    static ConsoleColors colors = new ConsoleColors();
 
     @Override
     public boolean called(String[] args, MessageReceivedEvent event)
@@ -49,7 +51,7 @@ public class CmdSettings implements Command
                         ).build()
         ).queue();
 
-        System.out.println(CustomMsg.INFO_PREFIX + ConsoleColors.YELLOW + "This Bot is RESTARTING in 5 seconds.");
+        System.out.println(CustomMsg.INFO_PREFIX + colors.YELLOW + "This Bot is RESTARTING in 5 seconds.");
 
         // TODO: restart
 
@@ -66,7 +68,7 @@ public class CmdSettings implements Command
                                 ).build()
                 ).queue();
 
-                System.out.println(CustomMsg.INFO_PREFIX + ConsoleColors.RED + "This Bot is now STOPPED and will be RESTARTING.");
+                System.out.println(CustomMsg.INFO_PREFIX + colors.RED + "This Bot is now STOPPED and will be RESTARTING.");
 
                 System.exit(0);
             }
@@ -94,7 +96,7 @@ public class CmdSettings implements Command
                         ).build()
         ).queue();
 
-        System.out.println(CustomMsg.INFO_PREFIX + ConsoleColors.RED + "This Bot is STOPPING in 5 seconds.");
+        System.out.println(CustomMsg.INFO_PREFIX + colors.RED + "This Bot is STOPPING in 5 seconds.");
 
         new Timer().schedule(new TimerTask()
         {
@@ -109,7 +111,7 @@ public class CmdSettings implements Command
                                 ).build()
                 ).queue();
 
-                System.out.println(CustomMsg.INFO_PREFIX + ConsoleColors.RED + "This Bot is now STOPPED." + ConsoleColors.RESET);
+                System.out.println(CustomMsg.INFO_PREFIX + colors.RED + "This Bot is now STOPPED." + colors.RESET);
 
                 System.exit(0);
             }
