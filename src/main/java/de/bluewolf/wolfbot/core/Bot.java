@@ -2,6 +2,7 @@ package de.bluewolf.wolfbot.core;
 
 import de.bluewolf.wolfbot.commands.bot_administration.*;
 import de.bluewolf.wolfbot.commands.chat.*;
+import de.bluewolf.wolfbot.commands.guild_administration.*;
 import de.bluewolf.wolfbot.commands.management.*;
 import de.bluewolf.wolfbot.commands.moderation.*;
 import de.bluewolf.wolfbot.listener.*;
@@ -50,9 +51,10 @@ public class Bot
     private static void initializeDatabase()
     {
         DatabaseHelper.connect();
-        DatabaseHelper.createBotStatsTable();
+        DatabaseHelper.createGuildsTable();
         DatabaseHelper.createRolesTable();
         DatabaseHelper.createPermissionsTable();
+        DatabaseHelper.createCommandChannelsTable();
     }
 
     private static void initializeCommands()
@@ -65,6 +67,8 @@ public class Bot
         CommandHandler.commands.put("news", new CmdNews());
 
         // -- guild administration
+        CommandHandler.commands.put("setchannel", new CmdSetChannel());
+        CommandHandler.commands.put("channel", new CmdSetChannel());
 
         // -- moderation
         CommandHandler.commands.put("clear", new CmdClear());
@@ -74,6 +78,7 @@ public class Bot
 
         // -- management
         CommandHandler.commands.put("manageroles", new CmdManageRoles());
+        CommandHandler.commands.put("mroles", new CmdManageRoles());
         CommandHandler.commands.put("role", new CmdRole());
         CommandHandler.commands.put("game", new CmdGame());
         CommandHandler.commands.put("help", new CmdHelp());
@@ -82,11 +87,14 @@ public class Bot
         CommandHandler.commands.put("m", new CmdMusic());
         CommandHandler.commands.put("music", new CmdMusic());
         CommandHandler.commands.put("vote", new CmdVote());
+        CommandHandler.commands.put("avatar", new CmdAvatar());
 
         // -- testing
         CommandHandler.commands.put("ping", new CmdPing());
 
         // | REGISTER COMMANDS with Permissions | //
+        BotSettings.commandsWithPermissions.put("setchannel", Permission.MANAGE_CHANNEL.getOffset());
+        BotSettings.commandsWithPermissions.put("avatar", Permission.MESSAGE_WRITE.getOffset());
         BotSettings.commandsWithPermissions.put("news", Permission.ADMINISTRATOR.getOffset());
         BotSettings.commandsWithPermissions.put("manageroles", Permission.MANAGE_ROLES.getOffset());
         BotSettings.commandsWithPermissions.put("role", Permission.MANAGE_ROLES.getOffset());

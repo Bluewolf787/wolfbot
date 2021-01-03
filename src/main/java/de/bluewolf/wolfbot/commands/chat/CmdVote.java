@@ -2,8 +2,8 @@ package de.bluewolf.wolfbot.commands.chat;
 
 import de.bluewolf.wolfbot.commands.Command;
 import de.bluewolf.wolfbot.settings.BotSettings;
+import de.bluewolf.wolfbot.settings.Permissions;
 import de.bluewolf.wolfbot.utils.CustomMsg;
-import de.bluewolf.wolfbot.utils.DatabaseHelper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
@@ -15,11 +15,10 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.awt.*;
 import java.io.*;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -341,15 +340,7 @@ public class CmdVote implements Command, Serializable
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) throws SQLException
     {
-        String command = "vote";
-        Permission permission;
-        ResultSet getPermission = DatabaseHelper.query("SELECT Permission FROM Permissions WHERE GuildId = '" + event.getGuild().getId() + "' AND Cmd = '" + command + "';");
-        if (getPermission.next())
-            permission = Permission.getFromOffset(getPermission.getInt("Permission"));
-        else
-            permission = Permission.MESSAGE_WRITE;
-
-        return BotSettings.checkPermissions(event, permission, command);
+        return Permissions.check(event, "vote");
     }
 
     @Override

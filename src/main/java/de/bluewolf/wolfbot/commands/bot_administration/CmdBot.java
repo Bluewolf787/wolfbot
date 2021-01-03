@@ -101,13 +101,13 @@ public class CmdBot implements Command
     private MessageEmbed infoMessage(MessageReceivedEvent event) throws SQLException
     {
         // Get all available guilds
-        ResultSet getAvailableGuilds = DatabaseHelper.query("SELECT GuildId, GuildName, Available FROM BotStats WHERE Available = 1;");
+        ResultSet getAvailableGuilds = DatabaseHelper.query("SELECT GuildId, GuildName, Available FROM Guilds WHERE Available = 1;");
         String[] availableGuildsList = buildGuildsMessage(getAvailableGuilds, false, true);
         String availableGuildsCount = availableGuildsList[0];
         String availableGuildsMessage = availableGuildsList[1];
 
         // Get all unavailable guilds
-        ResultSet getUnavailableGuilds = DatabaseHelper.query("SELECT GuildId, GuildName, Available FROM BotStats WHERE Available = 0;");
+        ResultSet getUnavailableGuilds = DatabaseHelper.query("SELECT GuildId, GuildName, Available FROM Guilds WHERE Available = 0;");
         String[] unavailableGuildsList = buildGuildsMessage(getUnavailableGuilds, false, false);
         String unavailableGuildsCount = unavailableGuildsList[0];
         String unavailableGuildsMessage = unavailableGuildsList[1];
@@ -132,13 +132,13 @@ public class CmdBot implements Command
     private MessageEmbed guildsMessage(MessageReceivedEvent event) throws SQLException
    {
         // Get all available guilds
-        ResultSet getAvailableGuilds = DatabaseHelper.query("SELECT GuildId, GuildName, Member, Region, Available FROM BotStats WHERE Available = 1;");
+        ResultSet getAvailableGuilds = DatabaseHelper.query("SELECT GuildId, GuildName, Member, Region, Available FROM Guilds WHERE Available = 1;");
         String[] availableGuildsList = buildGuildsMessage(getAvailableGuilds, true, true);
         String availableGuildsCount = availableGuildsList[0];
         String availableGuildsMessage = availableGuildsList[1];
 
         // Get all unavailable guilds
-        ResultSet getUnavailableGuilds = DatabaseHelper.query("SELECT GuildId, GuildName, Member, Region, Available FROM BotStats WHERE Available = 0;");
+        ResultSet getUnavailableGuilds = DatabaseHelper.query("SELECT GuildId, GuildName, Member, Region, Available FROM Guilds WHERE Available = 0;");
         String[] unavailableGuildsList = buildGuildsMessage(getUnavailableGuilds, true, false   );
         String unavailableGuildsCount = unavailableGuildsList[0];
         String unavailableGuildsMessage = unavailableGuildsList[1];

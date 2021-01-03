@@ -3,15 +3,14 @@ package de.bluewolf.wolfbot.commands.chat;
 import de.bluewolf.wolfbot.commands.Command;
 import de.bluewolf.wolfbot.core.CommandHandler;
 import de.bluewolf.wolfbot.settings.BotSettings;
+import de.bluewolf.wolfbot.settings.Permissions;
 import de.bluewolf.wolfbot.utils.CustomMsg;
-import de.bluewolf.wolfbot.utils.DatabaseHelper;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Objects;
@@ -21,15 +20,7 @@ public class CmdHelp implements Command
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) throws SQLException
     {
-        String command = "help";
-        Permission permission;
-        ResultSet getPermission = DatabaseHelper.query("SELECT Permission FROM Permissions WHERE GuildId = '" + event.getGuild().getId() + "' AND Cmd = '" + command + "';");
-        if (getPermission.next())
-            permission = Permission.getFromOffset(getPermission.getInt("Permission"));
-        else
-            permission = Permission.MESSAGE_WRITE;
-
-        return BotSettings.checkPermissions(event, permission, command);
+        return Permissions.check(event, "help");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package de.bluewolf.wolfbot.listener;
 
+import de.bluewolf.wolfbot.core.CommandHandler;
 import de.bluewolf.wolfbot.settings.BotSettings;
 import de.bluewolf.wolfbot.utils.ConsoleColors;
 import de.bluewolf.wolfbot.utils.CustomMsg;
@@ -36,14 +37,15 @@ public class BotGuildListener extends ListenerAdapter
                 + " (" + colors.CYAN + guildId + colors.RESET + ")"
         );
 
-        // Add guild to BotStats table in DB
+        // Add guild to Guilds table in DB
         DatabaseHelper.update(
-                "INSERT INTO botstats (GuildId, GuildName, Member, Region, Available, Password) VALUES" +
+                "INSERT INTO Guilds (GuildId, GuildName, Member, Region, Available, Password) VALUES" +
                 " ('" + guildId + "', '" + guildName + "', "+ guild.getMemberCount() + ", '" + guild.getRegionRaw() + "', 1, '" + PasswordGenerator.generatePassword() + "');"
         );
-
         // Add guild to permissions table with default permissions
         DatabaseHelper.insertGuildIntoPermissionsTable(guild.getId(), BotSettings.commandsWithPermissions);
+        // Add guild to CommandChannels table
+        DatabaseHelper.insertGuildIntoCommandChannelsTable(guildId, CommandHandler.commands);
 
         // Create Staff role on guild and add to DB
         try {
@@ -63,11 +65,15 @@ public class BotGuildListener extends ListenerAdapter
                         + " (" + colors.CYAN + guildId + colors.RESET + ")"
         );
 
-        // Create guild based tables in DB
-        DatabaseHelper.update("INSERT INTO botstats (GuildId, Available, Password) VALUES ('" + guildId + "', 0, '" + PasswordGenerator.generatePassword() + "');");
-
+        // Add guild to Guilds table in DB
+        DatabaseHelper.update(
+                "INSERT INTO Guilds (GuildId, Available, Password) VALUES " +
+                        "('" + guildId + "', 0, '" + PasswordGenerator.generatePassword() + "');"
+        );
         // Add guild to permissions table with default permissions
         DatabaseHelper.insertGuildIntoPermissionsTable(guildId, BotSettings.commandsWithPermissions);
+        // Add guild to CommandChannels table
+        DatabaseHelper.insertGuildIntoCommandChannelsTable(guildId, CommandHandler.commands);
     }
 
     public void onGuildLeave(GuildLeaveEvent event)
@@ -81,11 +87,14 @@ public class BotGuildListener extends ListenerAdapter
                         + " (" + colors.CYAN + guildId + colors.RESET + ")"
         );
 
-        // Remove guild from BotStats table
-        DatabaseHelper.update("DELETE FROM botstats WHERE GuildId = '" + guildId + "';");
-
+        // Remove guild from Guilds table
+        DatabaseHelper.update("DELETE FROM Guilds WHERE GuildId = '" + guildId + "';");
         // Remove guild from Permissions table
-        DatabaseHelper.deleteGuildFromPermissionsTable(guildId, BotSettings.commandsWithPermissions);
+        DatabaseHelper.deleteGuildFromPermissionsTable(guildId);
+        // Remove guild from Roles table
+        DatabaseHelper.deleteGuildFromRolesTable(guildId);
+        // Remove guild from CommandChannels table
+        DatabaseHelper.deleteGuildFromCommandChannelsTable(guildId);
     }
 
     public void onUnavailableGuildLeave(UnavailableGuildLeaveEvent event)
@@ -97,11 +106,14 @@ public class BotGuildListener extends ListenerAdapter
                         + " (" + colors.CYAN + guildId + colors.RESET + ")"
         );
 
-        // Remove guild from BotStats table
-        DatabaseHelper.update("DELETE FROM botstats WHERE GuildId = '" + guildId + "';");
-
+        // Remove guild from Guilds table
+        DatabaseHelper.update("DELETE FROM Guilds WHERE GuildId = '" + guildId + "';");
         // Remove guild from Permissions table
-        DatabaseHelper.deleteGuildFromPermissionsTable(guildId, BotSettings.commandsWithPermissions);
+        DatabaseHelper.deleteGuildFromPermissionsTable(guildId);
+        // Remove guild from Roles table
+        DatabaseHelper.deleteGuildFromRolesTable(guildId);
+        // Remove guild from CommandChannels table
+        DatabaseHelper.deleteGuildFromCommandChannelsTable(guildId);
     }
 
 }

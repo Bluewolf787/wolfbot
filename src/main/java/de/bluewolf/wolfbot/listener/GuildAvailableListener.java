@@ -25,15 +25,16 @@ public class GuildAvailableListener extends ListenerAdapter
         Guild guild = event.getGuild();
         String guildId = guild.getId();
 
-        ResultSet guildAvailable = DatabaseHelper.query("SELECT Available FROM BotStats WHERE GuildId = '" + guildId + "';");
+        ResultSet guildAvailable = DatabaseHelper.query("SELECT Available FROM Guilds WHERE GuildId = '" + guildId + "';");
 
+        // Update available status in Guilds table
         try
         {
             if (guildAvailable.next())
             {
                 if (guildAvailable.getInt("Available") == 0)
                 {
-                    DatabaseHelper.update("UPDATE BotStats SET Available = 1 WHERE GuildId = '" + guildId + "';");
+                    DatabaseHelper.update("UPDATE Guilds SET Available = 1 WHERE GuildId = '" + guildId + "';");
                     CustomMsg.INFO(event.getGuild().getName() + " is back available");
                 }
             }
@@ -55,15 +56,16 @@ public class GuildAvailableListener extends ListenerAdapter
     {
         String guildId = event.getGuild().getId();
 
-        ResultSet guildAvailable = DatabaseHelper.query("SELECT Available FROM BotStats WHERE GuildId = '" + guildId + "';");
+        ResultSet guildAvailable = DatabaseHelper.query("SELECT Available FROM Guilds WHERE GuildId = '" + guildId + "';");
 
+        // Update available status in Guilds table
         try
         {
             if (guildAvailable.next())
             {
                 if (guildAvailable.getInt("Available") == 1)
                 {
-                    DatabaseHelper.update("UPDATE BotStats SET Available = 0 WHERE GuildId = '" + guildId + "';");
+                    DatabaseHelper.update("UPDATE Guilds SET Available = 0 WHERE GuildId = '" + guildId + "';");
                     CustomMsg.INFO(event.getGuild().getName() + " is now unavailable");
                 }
             }

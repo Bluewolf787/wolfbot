@@ -1,10 +1,14 @@
 package de.bluewolf.wolfbot.utils;
 
+import de.bluewolf.wolfbot.commands.Command;
 import de.bluewolf.wolfbot.settings.Secret;
-import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.EmbedBuilder;
 
+import java.awt.*;
 import java.sql.*;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * @author Bluewolf787
@@ -19,10 +23,15 @@ public class DatabaseHelper
     private static Connection connection;
     private static Statement statement;
 
-    // Check the connection to the database
+    /**
+     * Check the connection to the database
+     * @return
+     */
     public static boolean isConnected() { return connection != null; }
 
-    // Create connection to database
+    /**
+     * Create connection to database
+     */
     public static void connect()
     {
         if (!isConnected())
@@ -35,12 +44,21 @@ public class DatabaseHelper
                 CustomMsg.INFO("Connected to database " + Secret.DB_DATABASE + " (SQL)");
             } catch (SQLException sqlException) {
                 CustomMsg.ERROR("Failed to connect to database " + Secret.DB_DATABASE + " (SQL)");
-                System.exit(0);
+                new Timer().schedule(new TimerTask()
+                {
+                    @Override
+                    public void run()
+                    {
+                        System.exit(0);
+                    }
+                }, 10000);
             }
         }
     }
 
-    // Close connection to database
+    /**
+     * Close connection to database
+     */
     public static void disconnect()
     {
         if (isConnected())
@@ -54,15 +72,17 @@ public class DatabaseHelper
         }
     }
 
-    // Create BotStats table
-    public static void createBotStatsTable()
+    /**
+     * Create Guilds table
+     */
+    public static void createGuildsTable()
     {
         if (isConnected())
         {
             try {
                 statement = connection.createStatement();
                 statement.executeUpdate(
-                        "CREATE TABLE IF NOT EXISTS `BotStats` "
+                        "CREATE TABLE IF NOT EXISTS `Guilds` "
                                 + "(`GuildId` varchar(20) NOT NULL PRIMARY KEY UNIQUE, "
                                 + "`GuildName` varchar(50), "
                                 + "`Member` int, "
@@ -70,14 +90,16 @@ public class DatabaseHelper
                                 + "`Available` tinyint(1)  NOT NULL, "
                                 + "`Password` varchar(10) NOT NULL);"
                 );
-                CustomMsg.INFO("Created the table 'BotStats' (SQL)");
+                CustomMsg.INFO("Created the table 'Guilds' (SQL)");
             } catch (SQLException sqlException) {
-                CustomMsg.ERROR("Failed to create the table 'BotStats' (SQL)");
+                CustomMsg.ERROR("Failed to create the table 'Guilds' (SQL)");
             }
         }
     }
 
-    // Create Guild bases game roles table
+    /**
+     * Create Roles table
+     */
     public static void createRolesTable()
     {
         if (isConnected())
@@ -100,7 +122,9 @@ public class DatabaseHelper
         }
     }
 
-    // Create Guild bases game roles table
+    /**
+     * Create Permissions table
+     */
     public static void createPermissionsTable()
     {
         if (isConnected())
@@ -110,9 +134,9 @@ public class DatabaseHelper
                 statement.executeUpdate(
                         "CREATE TABLE IF NOT EXISTS `Permissions` "
                                 + "(`GuildId` varchar(20) NOT NULL, "
-                                + "`Cmd` varchar(20) NOT NULL, "
+                                + "`Command` varchar(20) NOT NULL, "
                                 + "`Permission` int NOT NULL, "
-                                + "PRIMARY KEY(`GuildId`, `Cmd`));"
+                                + "PRIMARY KEY(`GuildId`, `Command`));"
                 );
                 CustomMsg.INFO("Created the table 'Permissions' (SQL)");
             } catch (SQLException sqlException) {
@@ -121,13 +145,37 @@ public class DatabaseHelper
         }
     }
 
-    // TODO Create channel table
+    /**
+     * Create CommandChannels table
+     */
+    public static void createCommandChannelsTable()
+    {
+        if (isConnected())
+        {
+            try {
+                statement = connection.createStatement();
+                statement.executeUpdate(
+                        "CREATE TABLE IF NOT EXISTS `CommandChannels` "
+                                + "(`GuildId` varchar(20) NOT NULL, "
+                                + "`Command` varchar(20) NOT NULL, "
+                                + "`ChannelId` varchar(20), "
+                                + "PRIMARY KEY(`GuildId`, `Command`));"
+                );
+                CustomMsg.INFO("Created the table 'Permissions' (SQL)");
+            } catch (SQLException sqlException) {
+                CustomMsg.ERROR("Failed to create the table 'Permissions' (SQL)");
+            }
+        }
+    }
 
-    // TODO Create Moderation tabel
+    // TODO Create Moderation table
 
     // TODO Create leaderboard table
 
-    // Delete table
+    /**
+     * Delete table from database
+     * @param table Name of the table
+     */
     public static void deleteTable(String table)
     {
         if (isConnected())
@@ -142,7 +190,10 @@ public class DatabaseHelper
         }
     }
 
-    // Update database
+    /**
+     * Update table in the database
+     * @param query Query statement (INSERT, UPDATE, DELETE)
+     */
     public static void update(String query)
     {
         if (isConnected())
@@ -159,6 +210,12 @@ public class DatabaseHelper
     }
 
     // Select data from database
+
+    /**
+     * Select data from table in the database
+     * @param query Select statement
+     * @return ResultSet with the data
+     */
     public static ResultSet query(String query)
     {
         ResultSet result = null;
@@ -177,22 +234,57 @@ public class DatabaseHelper
         return result;
     }
 
-    // Insert guild in Permissions table with default permissions
+    /**
+     * Insert guild into Permissions table with default permissions
+     * @param guildId ID of the guild which will be added
+     * @param commands HashMap of the commands with permission offset
+     */
     public static void insertGuildIntoPermissionsTable(String guildId, HashMap<String, Integer> commands)
     {
         for (String i : commands.keySet())
         {
-            update("INSERT INTO Permissions (GuildId, Cmd, Permission) VALUES ('" + guildId + "', '" + i + "', " + commands.get(i) + ");");
+            update("INSERT INTO Permissions (GuildId, Command, Permission) VALUES ('" + guildId + "', '" + i + "', " + commands.get(i) + ");");
         }
     }
 
-    // Remove guild from Permissions table
-    public static void deleteGuildFromPermissionsTable(String guildId, HashMap<String, Integer> commands)
+    /**
+     * Remove guild from Permissions table
+     * @param guildId ID of the guild which will be removed
+     */
+    public static void deleteGuildFromPermissionsTable(String guildId)
+    {
+        update("DELETE FROM Permissions WHERE GuildId = '" + guildId + "';");
+    }
+
+    /**
+     * Remove guild from Roles table
+     * @param guildId ID of the guild which will be removed
+     */
+    public static void deleteGuildFromRolesTable(String guildId)
+    {
+        update("DELETE FROM Roles WHERE GuildId = '" + guildId + "';");
+    }
+
+    /**
+     * Insert guild into CommandChannels table (Only guild ID and commands without channels)
+     * @param guildId ID of the guild which will be added
+     * @param commands HashMap of the commands
+     */
+    public static void insertGuildIntoCommandChannelsTable(String guildId, HashMap<String, Command> commands)
     {
         for (String i : commands.keySet())
         {
-            update("DELETE FROM Permissions WHERE GuildId = '" + guildId + "' AND Cmd = '" + i + "';");
+            update("INSERT INTO CommandChannels (GuildId, Command) VALUES ('" + guildId + "', '" + i + "');");
         }
+    }
+
+    /**
+     * Remove guild from CommandChannels table
+     * @param guildId ID of the guild which will be removed
+     */
+    public static void deleteGuildFromCommandChannelsTable(String guildId)
+    {
+        update("DELETE FROM CommandChannels WHERE GuildId = '" + guildId + "';");
     }
 
 }

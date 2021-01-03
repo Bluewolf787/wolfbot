@@ -42,8 +42,10 @@ Categories | [Administration](#administration) | [Management](#management) | [Mo
   <br><br>
   **Usage:**
   ````php
-  setchannel <command>           // Sets the current channel for the command
-  setchannel <command> <channel> // Sets the specified channel for the command
+  setchannel <command>              // Sets the current channel for the command
+  setchannel <command> <#channel>   // Sets the specified channel for the command
+  
+  // You can use the channel ID or #channel-name
   ````
 
 + ###### setpermission

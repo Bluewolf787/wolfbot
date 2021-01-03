@@ -2,17 +2,15 @@ package de.bluewolf.wolfbot.commands.moderation;
 
 import de.bluewolf.wolfbot.commands.Command;
 import de.bluewolf.wolfbot.settings.BotSettings;
+import de.bluewolf.wolfbot.settings.Permissions;
 import de.bluewolf.wolfbot.utils.CustomMsg;
-import de.bluewolf.wolfbot.utils.DatabaseHelper;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.awt.*;
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
@@ -34,15 +32,7 @@ public class CmdClear implements Command
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) throws SQLException
     {
-        String command = "clear";
-        Permission permission;
-        ResultSet getPermission = DatabaseHelper.query("SELECT Permission FROM Permissions WHERE GuildId = '" + event.getGuild().getId() + "' AND Cmd = '" + command + "';");
-        if (getPermission.next())
-            permission = Permission.getFromOffset(getPermission.getInt("Permission"));
-        else
-            permission = Permission.MESSAGE_MANAGE;
-
-        return BotSettings.checkPermissions(event, permission, command);
+        return Permissions.check(event, "clear");
     }
 
     @Override

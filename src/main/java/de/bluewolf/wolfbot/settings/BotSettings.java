@@ -1,13 +1,10 @@
 package de.bluewolf.wolfbot.settings;
 
-import de.bluewolf.wolfbot.utils.CustomMsg;
 import de.bluewolf.wolfbot.utils.DatabaseHelper;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.awt.*;
 import java.sql.ResultSet;
@@ -25,7 +22,7 @@ public class BotSettings
 
     // -- GENERAL SETTINGS -- //
     public static final String PREFIX = "!"; // Command prefix
-    public static final String VERSION = "SNAPSHOT-2021.1"; // Current version of the bot
+    public static final String VERSION = "2021.1.2-SNAPSHOT"; // Current version of the bot
 
     public static String CUSTOM_MASSAGE = "狼機器人"; // Message, which will be shown in the status
 
@@ -64,33 +61,5 @@ public class BotSettings
     public static OnlineStatus DOWNTIME_STATUS = OnlineStatus.DO_NOT_DISTURB;
     public static Activity RESTART_ACTIVITY = Activity.playing("RESTARTING");
     public static Activity STOP_ACTIVITY = Activity.playing("STOPPING");
-
-
-    // -- PERMISSION/STATUS CHECK -- //
-    public static boolean checkPermissions(MessageReceivedEvent event, Permission permission, String cmd)
-    {
-        Member member = event.getMember();
-        String author = event.getAuthor().getId();
-
-        if (!DOWNTIME)
-        {
-            if (member != null && member.getPermissions().contains(permission))
-                return false;
-            // No permissions
-            else
-            {
-                CustomMsg.NO_PERM(event, cmd);
-                return true;
-            }
-        }
-        else if (author.equals(Secret.ID))
-            return false;
-        // DOWNTIME (Stopping or Restarting)
-        else
-        {
-            CustomMsg.CMD_ERROR(event, cmd, "Tried to perform command while downtime");
-            return true;
-        }
-    }
 
 }

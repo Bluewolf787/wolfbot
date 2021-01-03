@@ -1,8 +1,5 @@
 package de.bluewolf.wolfbot.commands.chat;
 
-import de.bluewolf.wolfbot.audio.AudioInfo;
-import de.bluewolf.wolfbot.audio.PlayerSendHandler;
-import de.bluewolf.wolfbot.audio.TrackManager;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
@@ -12,22 +9,23 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
+import de.bluewolf.wolfbot.audio.AudioInfo;
+import de.bluewolf.wolfbot.audio.PlayerSendHandler;
+import de.bluewolf.wolfbot.audio.TrackManager;
 import de.bluewolf.wolfbot.commands.Command;
 import de.bluewolf.wolfbot.settings.BotSettings;
+import de.bluewolf.wolfbot.settings.Permissions;
 import de.bluewolf.wolfbot.utils.CustomMsg;
-import de.bluewolf.wolfbot.utils.DatabaseHelper;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.awt.*;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CmdMusic implements Command
@@ -139,23 +137,15 @@ public class CmdMusic implements Command
     {
         AudioTrackInfo trackInfo = info.getTrack().getInfo();
         String title = trackInfo.title;
-        long lenght = trackInfo.length;
+        long length = trackInfo.length;
 
-        return "`[ " + getTimestamp(lenght) + " ]` " + title + "\n";
+        return "`[ " + getTimestamp(length) + " ]` " + title + "\n";
     }
 
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) throws SQLException
     {
-        String command = "music";
-        Permission permission;
-        ResultSet getPermission = DatabaseHelper.query("SELECT Permission FROM Permissions WHERE GuildId = '" + event.getGuild().getId() + "' AND Cmd = '" + command + "';");
-        if (getPermission.next())
-            permission = Permission.getFromOffset(getPermission.getInt("Permission"));
-        else
-            permission = Permission.VOICE_CONNECT;
-
-        return BotSettings.checkPermissions(event, permission, command);
+        return Permissions.check(event, "music");
     }
 
     @Override

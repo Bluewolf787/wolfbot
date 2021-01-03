@@ -1,5 +1,7 @@
 package de.bluewolf.wolfbot.listener;
 
+import de.bluewolf.wolfbot.commands.Command;
+import de.bluewolf.wolfbot.core.CommandHandler;
 import de.bluewolf.wolfbot.settings.BotSettings;
 import de.bluewolf.wolfbot.utils.ConsoleColors;
 import de.bluewolf.wolfbot.utils.CustomMsg;
@@ -40,39 +42,41 @@ public class ReadyListener extends ListenerAdapter
 
             out.append("\t").append(CustomMsg.GUILD_NAME(guildName, guildId)).append("\n\t---------------------------- \n");
 
-            // Check if the guild already exists in the table BotStats
-            ResultSet guildFromBotStats = DatabaseHelper.query("SELECT GuildId FROM botstats WHERE GuildId = '" + guildId + "';");
+            // Check if the guild already exists in the table Guilds
+            ResultSet guildFromGuilds = DatabaseHelper.query("SELECT GuildId FROM Guilds WHERE GuildId = '" + guildId + "';");
             try {
-                if (guildFromBotStats.next())
+                if (guildFromGuilds.next())
                 {
                     // If exists: update
                     // Check if guild is available
                     if (event.getJDA().isUnavailable(guild.getIdLong()))
                     {
-                        // Update unavailable guild in BotStats table
+                        // Update unavailable guild in Guilds table
                         DatabaseHelper.update(
-                                "UPDATE botstats SET Available = 0 WHERE GuildId = '" + guildId + "';"
+                                "UPDATE Guilds SET Available = 0 WHERE GuildId = '" + guildId + "';"
                         );
                     }
                     else
                     {
-                        // Update available guild in BotStats table
+                        // Update available guild in Guilds table
                         DatabaseHelper.update(
-                                "UPDATE botstats SET GuildName = '" + guildName + "', Member = " + guildMember + "," +
+                                "UPDATE Guilds SET GuildName = '" + guildName + "', Member = " + guildMember + "," +
                                         " Region = '" + guildRegion + "', Available = 1 WHERE GuildId = '" + guildId + "';"
                         );
                     }
 
-                    // -- Add new commands with the default permissions the the Permissions table //
+                    // -- Add new commands with the default permissions to the Permissions table //
 
                     // Get all commands from Permissions table
-                    ResultSet getGuildCommandPermission = DatabaseHelper.query("SELECT Cmd FROM Permissions WHERE GuildId = '" + guildId + "';");
+                    ResultSet getGuildCommandPermission = DatabaseHelper.query(
+                            "SELECT Command FROM Permissions WHERE GuildId = '" + guildId + "';"
+                    );
 
                     // Put all commands from Permissions table in the ArrayList commands
                     List<String> commands = new ArrayList<>();
                     while (getGuildCommandPermission.next())
                     {
-                        commands.add(getGuildCommandPermission.getString("Cmd"));
+                        commands.add(getGuildCommandPermission.getString("Command"));
                     }
 
                     // Copy all commands with the permissions in the new HashMap newCommandsWithPermissions
@@ -88,30 +92,62 @@ public class ReadyListener extends ListenerAdapter
                         // If not add the new commands with permissions to the Permissions table
                         DatabaseHelper.insertGuildIntoPermissionsTable(guildId, newCommandsWithPermissions);
                     }
+
+                    // -- Add new commands to the CommandChannels table //
+
+                    // Get all commands from the CommandChannels table
+                    ResultSet getCommandsFromCommandChannels = DatabaseHelper.query(
+                            "SELECT Command FROM CommandChannels WHERE GuildId = '" + guildId + "';"
+                    );
+
+                    // Put all commands from CommandChannels table in the ArrayList commands
+                    List<String> commandsFromCommandChannels = new ArrayList<>();
+                    while (getCommandsFromCommandChannels.next())
+                    {
+                        commandsFromCommandChannels.add(getCommandsFromCommandChannels.getString("Command"));
+                    }
+
+                    // Copy all commands in a new HashMap newCommands
+                    HashMap<String, Command> newCommands = new HashMap<>(CommandHandler.commands);
+                    // Remove all entries from the new HashMap newCommands, which are in the commands ArrayList
+                    for (String command : commandsFromCommandChannels)
+                    {
+                        newCommands.remove(command);
+                    }
+
+                    // Check if the new HashMap newCommands is Empty
+                    if (!newCommands.isEmpty())
+                    {
+                        // If not add the new commands to the CommandChannels table
+                        DatabaseHelper.insertGuildIntoCommandChannelsTable(guildId, newCommands);
+                    }
+
                 }
-                else
+                else // Guild doesn't exists in Guilds table
                 {
                     // If does not exists: insert
                     // Check if guild is available
-                    if (event.getJDA().isUnavailable(guild.getIdLong()))
+                    if (event.getJDA().isUnavailable(guild.getIdLong())) // Guild is unavailable
                     {
-                        // Insert unavailable guild in BotStats table
+                        // Insert unavailable guild in Guilds table
                         DatabaseHelper.update(
-                                "INSERT INTO botstats (GuildId, Available, Password) VALUES" +
+                                "INSERT INTO Guilds (GuildId, Available, Password) VALUES" +
                                         " ('" + guildId + "', 1, '" + PasswordGenerator.generatePassword() + "');"
                         );
                     }
-                    else
+                    else // Guild is available
                     {
-                        // Insert available guild in BotStats table
+                        // Insert available guild in Guilds table
                         DatabaseHelper.update(
-                                "INSERT INTO botstats (GuildId, GuildName, Member, Region, Available, Password) VALUES" +
+                                "INSERT INTO Guilds (GuildId, GuildName, Member, Region, Available, Password) VALUES" +
                                         " ('" + guildId + "', '" + guildName + "', "+ guildMember + ", '" + guildRegion + "', 1, '" + PasswordGenerator.generatePassword() + "');"
                         );
                     }
 
-                    // Insert into Permissions table with default permissions
+                    // Insert guild into Permissions table with default permissions
                     DatabaseHelper.insertGuildIntoPermissionsTable(guildId, BotSettings.commandsWithPermissions);
+                    // Insert guild into CommandChannels table
+                    DatabaseHelper.insertGuildIntoCommandChannelsTable(guildId, CommandHandler.commands);
                 }
             } catch (SQLException sqlException) {
                 CustomMsg.ERROR("SQL exception while trying to update the database. Occurred while updating the guild: " + colors.CYAN + guildId + colors.RESET);

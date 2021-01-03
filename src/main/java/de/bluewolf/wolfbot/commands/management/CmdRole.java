@@ -2,6 +2,7 @@ package de.bluewolf.wolfbot.commands.management;
 
 import de.bluewolf.wolfbot.commands.Command;
 import de.bluewolf.wolfbot.settings.BotSettings;
+import de.bluewolf.wolfbot.settings.Permissions;
 import de.bluewolf.wolfbot.utils.CustomMsg;
 import de.bluewolf.wolfbot.utils.DatabaseHelper;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -211,15 +212,7 @@ public class CmdRole implements Command
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) throws SQLException
     {
-        String command = "role";
-        Permission permission;
-        ResultSet getPermission = DatabaseHelper.query("SELECT Permission FROM Permissions WHERE GuildId = '" + event.getGuild().getId() + "' AND Cmd = '" + command + "';");
-        if (getPermission.next())
-            permission = Permission.getFromOffset(getPermission.getInt("Permission"));
-        else
-            permission = Permission.MANAGE_ROLES;
-
-        return BotSettings.checkPermissions(event, permission, command);
+        return Permissions.check(event, "role");
     }
 
     @Override

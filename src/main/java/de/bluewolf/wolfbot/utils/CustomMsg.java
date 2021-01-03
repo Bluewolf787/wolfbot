@@ -3,6 +3,7 @@ package de.bluewolf.wolfbot.utils;
 import de.bluewolf.wolfbot.settings.BotSettings;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -26,38 +27,58 @@ public class CustomMsg
 
     public static final String TIMESTAMP = colors.GREEN + java.time.LocalDateTime.now() + colors.RESET;
 
+    /**
+     * Format a String with guild name and guild ID as GuildName (GuildId)
+     * @param guildName The name of the guild
+     * @param guildId The ID of the guild
+     * @return Formatted String with guild name and guild ID
+     */
     public static String GUILD_NAME(String guildName, String guildId)
     {
         return colors.CYAN + guildName + colors.RESET + " (" + colors.CYAN + guildId + ")" + colors.RESET;
     }
 
-    // Info
-    public static void INFO(String info)
+    /**
+     * Send a message marked as info in the terminal
+     * @param infoMessage Message which will be send
+     */
+    public static void INFO(String infoMessage)
     {
         System.out.println(
-                INFO_PREFIX + info + colors.BOLD + " - " + colors.RESET
+                INFO_PREFIX + infoMessage + colors.BOLD + " - " + colors.RESET
                 + TIMESTAMP
         );
     }
 
-    public static void CMD_INFO(MessageReceivedEvent event, String cmd, String info)
+    /**
+     * Send a info message for a specific command in a Discord channel and the terminal
+     * @param event MessageReceivedEvent
+     * @param command The Command which were performed
+     * @param infoMessage The message which will be send
+     */
+    public static void CMD_INFO(MessageReceivedEvent event, String command, String infoMessage)
     {
         event.getTextChannel().sendMessage(
                 new EmbedBuilder()
                         .setColor(Color.YELLOW)
-                        .setDescription(info)
+                        .setDescription(infoMessage)
                         .build()
         ).queue();
 
         System.out.println(
-                INFO_PREFIX + "Command " + colors.BLACK + "'" + colors.RED + BotSettings.PREFIX + cmd + colors.BLACK + "' " + colors.RESET
-                + "was performed with info: " + colors.YELLOW + info + colors.RESET
+                INFO_PREFIX + "Command " + colors.BLACK + "'" + colors.RED + BotSettings.PREFIX + command + colors.BLACK + "' " + colors.RESET
+                + "was performed with info: " + colors.YELLOW + infoMessage + colors.RESET
                 + colors.CYAN + " (" + event.getGuild().getName() + ") " + colors.RESET + "at " + TIMESTAMP
         );
     }
 
-    // NO PERM
-    public static void NO_PERM(MessageReceivedEvent event, String cmd)
+    /**
+     * Sends a message in a Discord channel and the terminal
+     * when a command were performed without permissions
+     *  @param event MessageReceivedEvent
+     * @param command The command which were performed
+     */
+    public static void NO_PERM(MessageReceivedEvent event, String command)
     {
         event.getTextChannel().sendMessage(
                 new EmbedBuilder()
@@ -69,41 +90,54 @@ public class CustomMsg
         ).queue();
 
         System.out.println(
-                NO_PERM_PREFIX + "Command " + colors.BLACK + "'" + colors.RED + BotSettings.PREFIX + cmd + colors.BLACK + "' " + colors.RESET
+                NO_PERM_PREFIX + "Command " + colors.BLACK + "'" + colors.RED + BotSettings.PREFIX + command + colors.BLACK + "' " + colors.RESET
                         + "was performed with " + colors.RED + "no permissions " + colors.RESET
                         + colors.CYAN + "(" + event.getGuild().getName() + ") " + colors.RESET
                         + "at " + TIMESTAMP
         );
     }
 
-    // COMMAND EXECUTED
-    public static void COMMAND_EXECUTED(MessageReceivedEvent event, String cmd)
+    /**
+     * Sends a message in the terminal when a command where successful performed
+     * @param event MessageReceivedEvent
+     * @param command The command which were performed
+     */
+    public static void COMMAND_EXECUTED(MessageReceivedEvent event, String command)
     {
         System.out.println(
-                INFO_PREFIX + "Command " + colors.BLACK + "'" + colors.RED + BotSettings.PREFIX + cmd + colors.BLACK + "' " + colors.RESET
+                INFO_PREFIX + "Command " + colors.BLACK + "'" + colors.RED + BotSettings.PREFIX + command + colors.BLACK + "' " + colors.RESET
                         + "was executed " + colors.CYAN + "(" + event.getGuild().getName() + ") " + colors.RESET
                         + "at " + TIMESTAMP
         );
     }
 
-    // ERROR
-    public static void CMD_ERROR(MessageReceivedEvent event, String cmd, String error)
+    /**
+     * Send a error message for a specific command in the Discord channel and the terminal
+     * @param event MessageReceivedEvent
+     * @param command The command which occurred the error
+     * @param errorMessage The error message
+     */
+    public static void CMD_ERROR(MessageReceivedEvent event, String command, String errorMessage)
     {
         event.getTextChannel().sendMessage(
                 new EmbedBuilder()
                         .setColor(Color.RED)
-                        .setDescription(error)
+                        .setDescription(errorMessage)
                         .build()
         ).queue();
 
         System.out.println(
-                ERROR_PREFIX + "Command " + colors.BLACK + "'" + colors.RED + BotSettings.PREFIX + cmd + colors.BLACK + "' " + colors.RESET
-                        + "was performed while error: '" + colors.RED + error + colors.RESET + "' occurred! "
+                ERROR_PREFIX + "Command " + colors.BLACK + "'" + colors.RED + BotSettings.PREFIX + command + colors.BLACK + "' " + colors.RESET
+                        + "was performed while error: '" + colors.RED + errorMessage + colors.RESET + "' occurred! "
                         + colors.CYAN + "(" + event.getGuild().getName() + ") " + colors.RESET
                         + "Performed at " + TIMESTAMP
         );
     }
 
+    /**
+     * Send a error message in the terminal
+     * @param error The error message
+     */
     public static void ERROR(String error)
     {
         System.out.println(
@@ -112,19 +146,50 @@ public class CustomMsg
         );
     }
 
-    // Help
-    public static void HELP_MSG(MessageReceivedEvent event, String content)
+    /**
+     * Send a message in a Discord channel when
+     * a specific command was performed in the wrong channel
+     * @param usedChannel The channel where the command was performed
+     * @param providedChannel The channel which is provided to perform the command
+     * @param command The command which was performed
+     */
+    public static void WRONG_CHANNEL(TextChannel usedChannel, TextChannel providedChannel, String command)
+    {
+        usedChannel.sendMessage(
+                new EmbedBuilder()
+                .setColor(Color.RED)
+                .setTitle("Tried to perform a command in the wrong channel")
+                .setDescription(
+                        "The command ``" + BotSettings.PREFIX + command +
+                        "`` can't be performed in this channel (" + usedChannel.getAsMention() + ").\n" +
+                        "You can use this command in " + providedChannel.getAsMention()
+                )
+                        .build()
+        ).queue();
+    }
+
+    /**
+     * Sends a message in a Discord channel with information about a specific command
+     * @param event MessageReceivedEvent
+     * @param helpMessage The message which will be send
+     */
+    public static void HELP_MSG(MessageReceivedEvent event, String helpMessage)
     {
         event.getTextChannel().sendMessage(
                 new EmbedBuilder()
                         .setColor(new Color(0xdf1196))
                         .setTitle("Command Help")
-                        .setDescription(content)
+                        .setDescription(helpMessage)
                         .build()
         ).queue();
     }
 
-    // Unknown command
+    /**
+     * Sends a message in a Discord channel and the terminal
+     * when a command that doesn't exists are performed
+     * @param event
+     * @param cmd
+     */
     public static void UNKNOWN_CMD(MessageReceivedEvent event, String cmd)
     {
         event.getTextChannel().sendMessage(
@@ -141,7 +206,7 @@ public class CustomMsg
         );
     }
 
-    // No track in queue (for music command)
+    // No track in queue error message (for music command)
     public static MessageEmbed NO_TRACK = new EmbedBuilder()
             .setColor(Color.RED)
             .setDescription(
@@ -149,18 +214,27 @@ public class CustomMsg
             )
             .build();
 
-    // Send direct msg
-    public static void sendPrivateMessage(User user, String content)
+    /**
+     * Sends a normal direct message to a user
+     * @param user The user who will received the message
+     * @param directMessage The message which will be send
+     */
+    public static void sendPrivateMessage(User user, String directMessage)
     {
         user.openPrivateChannel()
-                .flatMap(channel -> channel.sendMessage(content))
+                .flatMap(channel -> channel.sendMessage(directMessage))
                 .queue();
     }
 
-    public static void sendPrivateEmbedMessage(User user, MessageEmbed message)
+    /**
+     * Sends a direct message as MessageEmbed to a user
+     * @param user The user who will received the message
+     * @param directMessage The content of MessageEmbed which will be send
+     */
+    public static void sendPrivateEmbedMessage(User user, MessageEmbed directMessage)
     {
         user.openPrivateChannel()
-                .flatMap(channel -> channel.sendMessage(message))
+                .flatMap(channel -> channel.sendMessage(directMessage))
                 .queue();
     }
 
