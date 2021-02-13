@@ -7,6 +7,8 @@ import de.bluewolf.wolfbot.commands.management.*;
 import de.bluewolf.wolfbot.commands.moderation.*;
 import de.bluewolf.wolfbot.listener.*;
 import de.bluewolf.wolfbot.settings.BotSettings;
+import de.bluewolf.wolfbot.settings.Permissions;
+import de.bluewolf.wolfbot.utils.CustomMsg;
 import de.bluewolf.wolfbot.utils.DatabaseHelper;
 import de.bluewolf.wolfbot.settings.Secret;
 import de.bluewolf.wolfbot.commands.CmdPing;
@@ -40,6 +42,7 @@ public class Bot
         initializeDatabase();
         initializeListener();
         initializeCommands();
+        Permissions.initializePermissionInformation();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             DatabaseHelper.disconnect();
@@ -55,6 +58,8 @@ public class Bot
         DatabaseHelper.createRolesTable();
         DatabaseHelper.createPermissionsTable();
         DatabaseHelper.createCommandChannelsTable();
+
+        CustomMsg.INFO("Initialized Database");
     }
 
     private static void initializeCommands()
@@ -67,6 +72,7 @@ public class Bot
         CommandHandler.commands.put("news", new CmdNews());
 
         // -- guild administration
+        //CommandHandler.commands.put("setpermission", new CmdSetPermission());
         CommandHandler.commands.put("setchannel", new CmdSetChannel());
         CommandHandler.commands.put("channel", new CmdSetChannel());
 
@@ -95,6 +101,7 @@ public class Bot
         // | REGISTER COMMANDS with Permissions | //
         BotSettings.commandsWithPermissions.put("setchannel", Permission.MANAGE_CHANNEL.getOffset());
         BotSettings.commandsWithPermissions.put("avatar", Permission.MESSAGE_WRITE.getOffset());
+        BotSettings.commandsWithPermissions.put("setpermission", Permission.MANAGE_PERMISSIONS.getOffset());
         BotSettings.commandsWithPermissions.put("news", Permission.ADMINISTRATOR.getOffset());
         BotSettings.commandsWithPermissions.put("manageroles", Permission.MANAGE_ROLES.getOffset());
         BotSettings.commandsWithPermissions.put("role", Permission.MANAGE_ROLES.getOffset());
@@ -107,6 +114,8 @@ public class Bot
         BotSettings.commandsWithPermissions.put("music", Permission.VOICE_CONNECT.getOffset());
         BotSettings.commandsWithPermissions.put("vote", Permission.MESSAGE_WRITE.getOffset());
         BotSettings.commandsWithPermissions.put("ping", Permission.ADMINISTRATOR.getOffset());
+
+        CustomMsg.INFO("Initialized Commands");
     }
 
     private static void initializeListener()
@@ -117,5 +126,7 @@ public class Bot
         api.addEventListener(new BotGuildListener());
         api.addEventListener(new GuildAvailableListener());
         api.addEventListener(new DirectMsgListener());
+
+        CustomMsg.INFO("Initialized Listener");
     }
 }

@@ -57,7 +57,12 @@ Categories | [Administration](#administration) | [Management](#management) | [Mo
   <br><br>
   **Usage:**
   ````php
-  setpermission <command> <permission> // Sets the specified permission for the command
+  setpermission <command> <permission> // Sets the needed permission for the command
+  
+  // Available permissions
+  //  write_messages
+  //  read_messages
+  //   
   ````
 
 ### Management

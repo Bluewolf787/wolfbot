@@ -47,13 +47,11 @@ public class CmdSettings implements Command
                 new EmbedBuilder()
                         .setColor(Color.ORANGE)
                         .setDescription(
-                                "This Bot is `RESTARTING` in 5 seconds."
+                                ":warning: This Bot is `RESTARTING` in 5 seconds."
                         ).build()
         ).queue();
 
         System.out.println(CustomMsg.INFO_PREFIX + colors.YELLOW + "This Bot is RESTARTING in 5 seconds.");
-
-        // TODO: restart
 
         new Timer().schedule(new TimerTask()
         {
@@ -69,6 +67,23 @@ public class CmdSettings implements Command
                 ).queue();
 
                 System.out.println(CustomMsg.INFO_PREFIX + colors.RED + "This Bot is now STOPPED and will be RESTARTING.");
+
+                if (System.getProperty("os.name").toLowerCase().contains("linux"))
+                {
+                    try {
+                        Runtime.getRuntime().exec("screen sudo python restart.py");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                {
+                    try {
+                        Runtime.getRuntime().exec("WolfBotWinHelper.exe -restart");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
                 System.exit(0);
             }
@@ -92,7 +107,7 @@ public class CmdSettings implements Command
                 new EmbedBuilder()
                         .setColor(Color.RED)
                         .setDescription(
-                                "This Bot is `STOPPING` in 5 seconds."
+                                ":warning: This Bot is `STOPPING` in 5 seconds."
                         ).build()
         ).queue();
 

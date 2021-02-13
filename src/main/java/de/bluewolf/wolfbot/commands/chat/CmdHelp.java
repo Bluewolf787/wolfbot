@@ -5,11 +5,14 @@ import de.bluewolf.wolfbot.core.CommandHandler;
 import de.bluewolf.wolfbot.settings.BotSettings;
 import de.bluewolf.wolfbot.settings.Permissions;
 import de.bluewolf.wolfbot.utils.CustomMsg;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -31,14 +34,19 @@ public class CmdHelp implements Command
 
         if (args.length == 0)
         {
-            CustomMsg.sendPrivateEmbedMessage(event.getAuthor(), CustomMsg.COMMANDS);
-            event.getTextChannel().sendMessage(event.getAuthor().getAsMention() + " I have sent you a direct message with all information.").queue();
-            executed(true, event);
-        }
-        else if (args.length == 1 && args[0].equalsIgnoreCase("s")
-                && (Objects.requireNonNull(member).getRoles().contains(guild.getRolesByName("Staff", true).get(0)) || Objects.requireNonNull(member).getPermissions().contains(Permission.ADMINISTRATOR)))
-        {
-            CustomMsg.sendPrivateEmbedMessage(event.getAuthor(), CustomMsg.STAFF_COMMANDS);
+            //CustomMsg.sendPrivateEmbedMessage(event.getAuthor(), CustomMsg.COMMANDS);
+            StringBuilder commandsHelpMessage = new StringBuilder();
+            for (String i : CommandHandler.commands.keySet())
+            {
+                commandsHelpMessage.append(" - ``").append(BotSettings.PREFIX).append(i).append("``\n");
+            }
+            MessageEmbed commandsHelpMessageEmbed = new EmbedBuilder()
+                    .setColor(new Color(0xdf1196))
+                    .setTitle("WolfBot commands help page")
+                    .setDescription(commandsHelpMessage.toString() + "\n\nThis page will be updated soon!")
+                    .build();
+
+            CustomMsg.sendPrivateEmbedMessage(event.getAuthor(), commandsHelpMessageEmbed);
             event.getTextChannel().sendMessage(event.getAuthor().getAsMention() + " I have sent you a direct message with all information.").queue();
             executed(true, event);
         }

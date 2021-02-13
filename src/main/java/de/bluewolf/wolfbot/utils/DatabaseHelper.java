@@ -44,6 +44,7 @@ public class DatabaseHelper
                 CustomMsg.INFO("Connected to database " + Secret.DB_DATABASE + " (SQL)");
             } catch (SQLException sqlException) {
                 CustomMsg.ERROR("Failed to connect to database " + Secret.DB_DATABASE + " (SQL)");
+                sqlException.printStackTrace();
                 new Timer().schedule(new TimerTask()
                 {
                     @Override
@@ -51,7 +52,7 @@ public class DatabaseHelper
                     {
                         System.exit(0);
                     }
-                }, 10000);
+                }, 5000);
             }
         }
     }
@@ -109,9 +110,9 @@ public class DatabaseHelper
                 statement.executeUpdate(
                         "CREATE TABLE IF NOT EXISTS `Roles` "
                                 + "(`GuildId` varchar(20) NOT NULL, "
-                                + "`Role` varchar(20) NOT NULL UNIQUE, "
-                                + "`Alias1` varchar(20) UNIQUE, "
-                                + "`Alias2` varchar(10) UNIQUE,"
+                                + "`Role` varchar(20) NOT NULL, "
+                                + "`Alias1` varchar(20), "
+                                + "`Alias2` varchar(10),"
                                 + "`Type` varchar(7) NOT NULL, "
                                 + "PRIMARY KEY(`GuildId`, `Role`));"
                 );

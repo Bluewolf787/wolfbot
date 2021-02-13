@@ -27,34 +27,10 @@ public class BotSettings
     public static String CUSTOM_MASSAGE = "狼機器人"; // Message, which will be shown in the status
 
     public static OnlineStatus STATUS = OnlineStatus.ONLINE; // Online status
-    public static Activity ACTIVITY = Activity.playing(VERSION + " | -help | " + CUSTOM_MASSAGE); // Playing status
+    public static Activity ACTIVITY = Activity.playing(VERSION + " | " + PREFIX + "help | " + CUSTOM_MASSAGE); // Playing status
 
     // All Bot commands with permissions
     public static HashMap<String, Integer> commandsWithPermissions = new HashMap<String, Integer>();
-
-    // -- CREATE STAFF ROLE -- //
-    public static void createStaffRole(Guild guild, String guildId) throws SQLException
-    {
-        ResultSet getRoles = DatabaseHelper.query("SELECT Role FROM Roles WHERE GuildId = '" + guildId + "' AND Role = 'Staff';");
-
-        if (!getRoles.next())
-        {
-            DatabaseHelper.update("INSERT INTO Roles (GuildId, Role, Type) VALUES ('" + guildId + "', 'Staff', 'general');");
-            guild.createRole()
-                    .setColor(Color.YELLOW)
-                    .setHoisted(true)
-                    .setMentionable(true)
-                    .setName("Staff")
-                    .setPermissions(
-                            Permission.MESSAGE_MANAGE, Permission.MANAGE_ROLES, Permission.BAN_MEMBERS,
-                            Permission.KICK_MEMBERS, Permission.VIEW_CHANNEL, Permission.MESSAGE_HISTORY,
-                            Permission.MESSAGE_READ, Permission.MESSAGE_WRITE, Permission.MESSAGE_ADD_REACTION,
-                            Permission.MESSAGE_ATTACH_FILES, Permission.VOICE_CONNECT, Permission.VOICE_SPEAK,
-                            Permission.VOICE_DEAF_OTHERS, Permission.VOICE_MUTE_OTHERS, Permission.VOICE_MOVE_OTHERS
-                    ).queue();
-
-        }
-    }
 
     // -- STATUS AND PERMISSION SETTINGS -- //
     public static boolean DOWNTIME = false;

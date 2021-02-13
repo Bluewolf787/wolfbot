@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 /**
  * @author Bluewolf787
@@ -97,6 +98,16 @@ public class Permissions
             CustomMsg.CMD_ERROR(event, command, "Tried to perform command while downtime");
             return true;
         }
+    }
+
+    public static HashMap<String, Integer> permissionInformation = new HashMap<>();
+
+    public static void initializePermissionInformation()
+    {
+        permissionInformation.put(Permission.MESSAGE_WRITE.getName(), Permission.MESSAGE_WRITE.getOffset());
+        permissionInformation.put(Permission.MESSAGE_READ.getName(), Permission.MESSAGE_READ.getOffset());
+
+        CustomMsg.INFO("Initialized Permission information");
     }
 
 }

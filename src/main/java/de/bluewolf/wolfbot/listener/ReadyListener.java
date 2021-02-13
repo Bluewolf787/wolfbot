@@ -153,13 +153,6 @@ public class ReadyListener extends ListenerAdapter
                 CustomMsg.ERROR("SQL exception while trying to update the database. Occurred while updating the guild: " + colors.CYAN + guildId + colors.RESET);
                 sqlException.printStackTrace();
             }
-
-            // Check if the staff role exists, when not create
-            try {
-                BotSettings.createStaffRole(guild, guildId);
-            } catch (SQLException sqlException) {
-                CustomMsg.ERROR("Failed to create Staff role on the guild " + CustomMsg.GUILD_NAME(guildName, guildId));
-            }
         }
 
         // Print the total number of guilds the Bot is running on

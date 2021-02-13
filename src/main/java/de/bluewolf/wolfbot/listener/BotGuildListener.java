@@ -46,13 +46,6 @@ public class BotGuildListener extends ListenerAdapter
         DatabaseHelper.insertGuildIntoPermissionsTable(guild.getId(), BotSettings.commandsWithPermissions);
         // Add guild to CommandChannels table
         DatabaseHelper.insertGuildIntoCommandChannelsTable(guildId, CommandHandler.commands);
-
-        // Create Staff role on guild and add to DB
-        try {
-            BotSettings.createStaffRole(guild, guildId);
-        } catch (SQLException sqlException) {
-            CustomMsg.ERROR("Failed to create Staff role on the guild " + CustomMsg.GUILD_NAME(guildName, guildId));
-        }
     }
 
     public void onUnavailableGuildJoined(UnavailableGuildJoinedEvent event)

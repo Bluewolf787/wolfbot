@@ -1,6 +1,5 @@
 package de.bluewolf.wolfbot.listener;
 
-import de.bluewolf.wolfbot.settings.BotSettings;
 import de.bluewolf.wolfbot.utils.CustomMsg;
 import de.bluewolf.wolfbot.utils.DatabaseHelper;
 import net.dv8tion.jda.api.entities.Guild;
@@ -42,13 +41,6 @@ public class GuildAvailableListener extends ListenerAdapter
         catch (SQLException sqlException)
         {
             sqlException.printStackTrace();
-        }
-
-        // Create Staff role on guild and add to DB, when not exists
-        try {
-            BotSettings.createStaffRole(guild, guildId);
-        } catch (SQLException sqlException) {
-            CustomMsg.ERROR("Failed to create Staff role on the guild " + CustomMsg.GUILD_NAME(guild.getName(), guildId));
         }
     }
 
