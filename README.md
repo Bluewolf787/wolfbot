@@ -1,5 +1,7 @@
 # WolfBot
 
+[Discord](https://discord.com/) Bot in Java based on [JDA](https://github.com/DV8FromTheWorld/JDA)
+
 # Table of Contents
 1. [Preface](#preface)
 2. [Use WolfBot](#use-wolfbot)
