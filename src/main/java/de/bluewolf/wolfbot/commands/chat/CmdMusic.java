@@ -180,7 +180,7 @@ public class CmdMusic implements Command
                 loadTrack(input, Objects.requireNonNull(event.getMember()), event.getMessage());
                 // AudioTrack track1 = getPlayer(guild).getPlayingTrack();
                 // AudioTrackInfo info1 = track1.getInfo();
-                event.getTextChannel().sendMessage(
+                event.getTextChannel().sendMessageEmbeds(
                         new EmbedBuilder()
                                 .setColor(Color.MAGENTA)
                                 .setDescription(
@@ -201,7 +201,7 @@ public class CmdMusic implements Command
                     for (int i = (args.length > 1 ? Integer.parseInt(args[1]) : 1); i == 1; i--)
                     {
                         skip(guild);
-                        event.getTextChannel().sendMessage(
+                        event.getTextChannel().sendMessageEmbeds(
                                 new EmbedBuilder()
                                         .setColor(Color.MAGENTA)
                                         .setDescription(
@@ -213,7 +213,7 @@ public class CmdMusic implements Command
 
                 }
                 else
-                    event.getTextChannel().sendMessage(CustomMsg.NO_TRACK).queue();
+                    event.getTextChannel().sendMessageEmbeds(CustomMsg.NO_TRACK).queue();
 
                 executed(true, event);
 
@@ -227,7 +227,7 @@ public class CmdMusic implements Command
                     getManager(guild).purgeQueue();
                     skip(guild);
                     guild.getAudioManager().closeAudioConnection();
-                    event.getTextChannel().sendMessage(
+                    event.getTextChannel().sendMessageEmbeds(
                             new EmbedBuilder()
                                     .setColor(Color.MAGENTA)
                                     .setDescription(
@@ -238,7 +238,7 @@ public class CmdMusic implements Command
 
                 }
                 else
-                    event.getTextChannel().sendMessage(CustomMsg.NO_TRACK).queue();
+                    event.getTextChannel().sendMessageEmbeds(CustomMsg.NO_TRACK).queue();
 
                 executed(true, event);
 
@@ -251,7 +251,7 @@ public class CmdMusic implements Command
                 {
 
                     getManager(guild).shuffleQueue();
-                    event.getTextChannel().sendMessage(
+                    event.getTextChannel().sendMessageEmbeds(
                             new EmbedBuilder()
                                     .setColor(Color.MAGENTA)
                                     .setDescription(
@@ -262,7 +262,7 @@ public class CmdMusic implements Command
 
                 }
                 else
-                    event.getTextChannel().sendMessage(CustomMsg.NO_TRACK).queue();
+                    event.getTextChannel().sendMessageEmbeds(CustomMsg.NO_TRACK).queue();
 
                 executed(true, event);
 
@@ -279,7 +279,7 @@ public class CmdMusic implements Command
                 if (hasPlayer(guild))
                 {
 
-                    event.getTextChannel().sendMessage(
+                    event.getTextChannel().sendMessageEmbeds(
                             new EmbedBuilder()
                                     .setColor(Color.MAGENTA)
                                     .setTitle("Current Track Info")
@@ -292,7 +292,7 @@ public class CmdMusic implements Command
 
                 }
                 else
-                    event.getTextChannel().sendMessage(CustomMsg.NO_TRACK).queue();
+                    event.getTextChannel().sendMessageEmbeds(CustomMsg.NO_TRACK).queue();
 
                 executed(true, event);
 
@@ -319,7 +319,7 @@ public class CmdMusic implements Command
                     String out = String.join("\n", trackSublist);
                     int pageNumbAll = tracks.size() >= 20 ? tracks.size() / 20 : 1;
 
-                    event.getTextChannel().sendMessage(
+                    event.getTextChannel().sendMessageEmbeds(
                             new EmbedBuilder()
                                     .setColor(Color.MAGENTA)
                                     .setDescription(
@@ -331,7 +331,7 @@ public class CmdMusic implements Command
 
                 }
                 else
-                    event.getTextChannel().sendMessage(CustomMsg.NO_TRACK).queue();
+                    event.getTextChannel().sendMessageEmbeds(CustomMsg.NO_TRACK).queue();
 
                 executed(true, event);
 
@@ -343,7 +343,7 @@ public class CmdMusic implements Command
                 {
 
                     getPlayer(guild).setPaused(true);
-                    event.getTextChannel().sendMessage(
+                    event.getTextChannel().sendMessageEmbeds(
                             new EmbedBuilder()
                                     .setColor(Color.MAGENTA)
                                     .setDescription(
@@ -354,7 +354,7 @@ public class CmdMusic implements Command
 
                 }
                 else
-                    event.getTextChannel().sendMessage(CustomMsg.NO_TRACK).queue();
+                    event.getTextChannel().sendMessageEmbeds(CustomMsg.NO_TRACK).queue();
 
                 executed(true, event);
 
@@ -366,7 +366,7 @@ public class CmdMusic implements Command
                 {
 
                     getPlayer(guild).setPaused(false);
-                    event.getTextChannel().sendMessage(
+                    event.getTextChannel().sendMessageEmbeds(
                             new EmbedBuilder()
                                     .setColor(Color.MAGENTA)
                                     .setDescription(
@@ -377,7 +377,7 @@ public class CmdMusic implements Command
 
                 }
                 else
-                    event.getTextChannel().sendMessage(CustomMsg.NO_TRACK).queue();
+                    event.getTextChannel().sendMessageEmbeds(CustomMsg.NO_TRACK).queue();
 
                 executed(true, event);
 

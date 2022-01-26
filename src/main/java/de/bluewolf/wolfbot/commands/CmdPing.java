@@ -21,7 +21,7 @@ public class CmdPing implements Command
     @Override
     public void action(String[] args, MessageReceivedEvent event)
     {
-        event.getChannel().sendMessage(
+        event.getChannel().sendMessageEmbeds(
                 new EmbedBuilder().setColor(Color.GREEN).setDescription("Pong!").build()
         ).queue();
 

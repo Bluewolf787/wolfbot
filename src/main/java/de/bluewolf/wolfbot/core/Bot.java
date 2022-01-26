@@ -100,7 +100,7 @@ public class Bot
 
         // | REGISTER COMMANDS with Permissions | //
         BotSettings.commandsWithPermissions.put("setchannel", Permission.MANAGE_CHANNEL.getOffset());
-        BotSettings.commandsWithPermissions.put("avatar", Permission.MESSAGE_WRITE.getOffset());
+        BotSettings.commandsWithPermissions.put("avatar", Permission.MESSAGE_SEND.getOffset());
         BotSettings.commandsWithPermissions.put("setpermission", Permission.MANAGE_PERMISSIONS.getOffset());
         BotSettings.commandsWithPermissions.put("news", Permission.ADMINISTRATOR.getOffset());
         BotSettings.commandsWithPermissions.put("manageroles", Permission.MANAGE_ROLES.getOffset());
@@ -109,10 +109,10 @@ public class Bot
         BotSettings.commandsWithPermissions.put("ban", Permission.BAN_MEMBERS.getOffset());
         BotSettings.commandsWithPermissions.put("unban", Permission.BAN_MEMBERS.getOffset());
         BotSettings.commandsWithPermissions.put("kick", Permission.KICK_MEMBERS.getOffset());
-        BotSettings.commandsWithPermissions.put("game", Permission.MESSAGE_WRITE.getOffset());
-        BotSettings.commandsWithPermissions.put("help", Permission.MESSAGE_WRITE.getOffset());
+        BotSettings.commandsWithPermissions.put("game", Permission.MESSAGE_SEND.getOffset());
+        BotSettings.commandsWithPermissions.put("help", Permission.MESSAGE_SEND.getOffset());
         BotSettings.commandsWithPermissions.put("music", Permission.VOICE_CONNECT.getOffset());
-        BotSettings.commandsWithPermissions.put("vote", Permission.MESSAGE_WRITE.getOffset());
+        BotSettings.commandsWithPermissions.put("vote", Permission.MESSAGE_SEND.getOffset());
         BotSettings.commandsWithPermissions.put("ping", Permission.ADMINISTRATOR.getOffset());
 
         CustomMsg.INFO("Initialized Commands");
@@ -122,7 +122,7 @@ public class Bot
     {
         // System Listener
         api.addEventListener(new CommandListener());
-        api.addEventListener(new ReadyListener());
+        //api.addEventListener(new ReadyListener());
         api.addEventListener(new BotGuildListener());
         api.addEventListener(new GuildAvailableListener());
         api.addEventListener(new DirectMsgListener());

@@ -82,7 +82,7 @@ public class CmdVote implements Command, Serializable
     private static void message(String content, Color color)
     {
         EmbedBuilder embedBuilder = new EmbedBuilder().setColor(color).setDescription(content);
-        textChannel.sendMessage(embedBuilder.build()).queue();
+        textChannel.sendMessageEmbeds(embedBuilder.build()).queue();
     }
 
     private static EmbedBuilder getParsedPoll(Poll poll, Guild guild)
@@ -128,7 +128,7 @@ public class CmdVote implements Command, Serializable
 
         polls.put(event.getGuild(), poll);
 
-        textChannel.editMessageById(msg.getId(), getParsedPoll(poll, event.getGuild()).build()).queue();
+        textChannel.editMessageById(msg.getId(), (CharSequence) getParsedPoll(poll, event.getGuild()).build()).queue();
         textChannel.pinMessageById(msg.getId()).queue();
 
         tempList.put(event.getGuild(), polls.get(event.getGuild()).getMessage(event.getGuild()));
@@ -153,7 +153,7 @@ public class CmdVote implements Command, Serializable
         if (poll.votes.containsKey(author.getUser().getId()))
         {
 
-            tempList.get(guild).getTextChannel().sendMessage(
+            tempList.get(guild).getTextChannel().sendMessageEmbeds(
                     new EmbedBuilder()
                             .setColor(Color.RED)
                             .setDescription("You only can vote once, " + author.getAsMention() + ".")
@@ -172,7 +172,7 @@ public class CmdVote implements Command, Serializable
         }
         poll.votes.put(author.getUser().getId(), voteIndex);
         polls.replace(guild, poll);
-        tempList.get(guild).editMessage(getParsedPoll(poll, guild).build()).queue();
+        tempList.get(guild).editMessage((CharSequence) getParsedPoll(poll, guild).build()).queue();
 
         try {
             savePoll(guild);
@@ -287,7 +287,7 @@ public class CmdVote implements Command, Serializable
             return;
         }
 
-        textChannel.sendMessage(getParsedPoll(poll, guild).build()).queue();
+        textChannel.sendMessageEmbeds(getParsedPoll(poll, guild).build()).queue();
 
         executed(true, event);
 
@@ -320,7 +320,7 @@ public class CmdVote implements Command, Serializable
             tempList.get(event.getGuild()).delete().queue();
             polls.remove(guild);
             tempList.remove(guild);
-            textChannel.sendMessage(getParsedPoll(poll, guild).build()).queue();
+            textChannel.sendMessageEmbeds(getParsedPoll(poll, guild).build()).queue();
             message("Poll closed by " + event.getAuthor().getAsMention() + ".", new Color(0xE51770));
 
             executed(true, event);

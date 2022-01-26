@@ -40,7 +40,7 @@ public class BotGuildListener extends ListenerAdapter
         // Add guild to Guilds table in DB
         DatabaseHelper.update(
                 "INSERT INTO Guilds (GuildId, GuildName, Member, Region, Available, Password) VALUES" +
-                " ('" + guildId + "', '" + guildName + "', "+ guild.getMemberCount() + ", '" + guild.getRegionRaw() + "', 1, '" + PasswordGenerator.generatePassword() + "');"
+                " ('" + guildId + "', '" + guildName + "', "+ guild.getMemberCount() + ", '" + "', 1, '" + PasswordGenerator.generatePassword() + "');"
         );
         // Add guild to permissions table with default permissions
         DatabaseHelper.insertGuildIntoPermissionsTable(guild.getId(), BotSettings.commandsWithPermissions);

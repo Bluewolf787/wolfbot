@@ -55,7 +55,7 @@ public class CmdManageRoles implements Command
                     .setHoisted(true)
                     .queue();
 
-            event.getChannel().sendMessage(
+            event.getChannel().sendMessageEmbeds(
                     new EmbedBuilder()
                             .setColor(Color.GREEN)
                             .setTitle("General role created!")
@@ -96,7 +96,7 @@ public class CmdManageRoles implements Command
                     .setMentionable(true)
                     .queue();
 
-            event.getChannel().sendMessage(
+            event.getChannel().sendMessageEmbeds(
                     new EmbedBuilder()
                             .setColor(Color.GREEN)
                             .setTitle("Game role created!")
@@ -123,7 +123,7 @@ public class CmdManageRoles implements Command
             {
                 // If the role exists: remove from guild and database
                 guild.getRolesByName(role, true).get(0).delete().queue();
-                event.getChannel().sendMessage(
+                event.getChannel().sendMessageEmbeds(
                         new EmbedBuilder()
                                 .setColor(Color.GREEN)
                                 .setTitle("General role deleted!")
@@ -148,7 +148,7 @@ public class CmdManageRoles implements Command
                 System.out.println("ROLE : " + role + " | " + guild.getRolesByName(role, true).get(0).toString());
                 // If the role exists: remove from guild and database
                 guild.getRolesByName(role, true).get(0).delete().queue();
-                event.getChannel().sendMessage(
+                event.getChannel().sendMessageEmbeds(
                         new EmbedBuilder()
                                 .setColor(Color.GREEN)
                                 .setTitle("Game role deleted!")
@@ -192,7 +192,7 @@ public class CmdManageRoles implements Command
             if (alias1.isEmpty() && alias2.isEmpty())
             {
                 DatabaseHelper.update("INSERT INTO Roles (GuildId, Role, Type) VALUES ('" + guildId + "', '" + role + "', 'general');");
-                event.getChannel().sendMessage(
+                event.getChannel().sendMessageEmbeds(
                         new EmbedBuilder()
                             .setColor(Color.GREEN)
                             .setTitle("General role added!")
@@ -209,7 +209,7 @@ public class CmdManageRoles implements Command
                     alias = alias2;
 
                 DatabaseHelper.update("INSERT INTO Roles (GuildId, Role, Alias1, Type) VALUES ('" + guildId + "', '" + role + "', '" + alias + "', 'general');");
-                event.getChannel().sendMessage(
+                event.getChannel().sendMessageEmbeds(
                         new EmbedBuilder()
                                 .setColor(Color.GREEN)
                                 .setTitle("General role added!")
@@ -220,7 +220,7 @@ public class CmdManageRoles implements Command
             else
             {
                 DatabaseHelper.update("INSERT INTO Roles (GuildId, Role, Alias1, Alias2, Type) VALUES ('" + guildId + "', '" + role + "', '" + alias1 + "', '" + alias2 + "', 'general');");
-                event.getChannel().sendMessage(
+                event.getChannel().sendMessageEmbeds(
                         new EmbedBuilder()
                                 .setColor(Color.GREEN)
                                 .setTitle("General role added!")
@@ -261,7 +261,7 @@ public class CmdManageRoles implements Command
             if (alias1.isEmpty() && alias2.isEmpty())
             {
                 DatabaseHelper.update("INSERT INTO Roles (GuildId, Role, Type) VALUES ('" + guildId + "', '" + role + "', 'game');");
-                event.getChannel().sendMessage(
+                event.getChannel().sendMessageEmbeds(
                         new EmbedBuilder()
                                 .setColor(Color.GREEN)
                                 .setTitle("Game role added!")
@@ -278,7 +278,7 @@ public class CmdManageRoles implements Command
                     alias = alias2;
 
                 DatabaseHelper.update("INSERT INTO Roles (GuildId, Role, Alias1, Type) VALUES ('" + guildId + "', '" + role + "', '" + alias + "', 'game');");
-                event.getChannel().sendMessage(
+                event.getChannel().sendMessageEmbeds(
                         new EmbedBuilder()
                                 .setColor(Color.GREEN)
                                 .setTitle("Game role added!")
@@ -289,7 +289,7 @@ public class CmdManageRoles implements Command
             else
             {
                 DatabaseHelper.update("INSERT INTO Roles (GuildId, Role, Alias1, Alias2, Type) VALUES ('" + guildId + "', '" + role + "', '" + alias1 + "', '" + alias2 + "', 'game');");
-                event.getChannel().sendMessage(
+                event.getChannel().sendMessageEmbeds(
                         new EmbedBuilder()
                                 .setColor(Color.GREEN)
                                 .setTitle("Game role added!")
@@ -312,7 +312,7 @@ public class CmdManageRoles implements Command
         {
             // If the role exists: remove from DB
             DatabaseHelper.update("DELETE FROM Roles WHERE GuildId = '" + guildId + "' AND Role = '" + role + "' AND Type = 'general';");
-            event.getChannel().sendMessage(
+            event.getChannel().sendMessageEmbeds(
                     new EmbedBuilder()
                             .setColor(Color.GREEN)
                             .setTitle("General role removed!")
@@ -338,7 +338,7 @@ public class CmdManageRoles implements Command
         {
             // If the role exists: remove from DB
             DatabaseHelper.update("DELETE FROM Roles WHERE GuildId = '" + guildId + "' AND Role = '" + role + "' AND Type = 'game';");
-            event.getChannel().sendMessage(
+            event.getChannel().sendMessageEmbeds(
                     new EmbedBuilder()
                             .setColor(Color.GREEN)
                             .setTitle("Game role removed!")
@@ -368,7 +368,7 @@ public class CmdManageRoles implements Command
         }
 
         // Send message with all roles
-        event.getTextChannel().sendMessage(
+        event.getTextChannel().sendMessageEmbeds(
                 new EmbedBuilder()
                         .setColor(Color.CYAN)
                         .setTitle("General Roles")
@@ -391,7 +391,7 @@ public class CmdManageRoles implements Command
         }
 
         // Send message with all roles
-        event.getTextChannel().sendMessage(
+        event.getTextChannel().sendMessageEmbeds(
                 new EmbedBuilder()
                         .setColor(Color.WHITE)
                         .setTitle("Game Roles")

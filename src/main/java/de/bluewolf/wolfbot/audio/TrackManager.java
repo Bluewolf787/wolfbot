@@ -67,16 +67,9 @@ public class TrackManager extends AudioEventAdapter
     public void onTrackStart(AudioPlayer player, AudioTrack track)
     {
         AudioInfo info = queue.element();
-        VoiceChannel vChan = Objects.requireNonNull(info.getAuthor().getVoiceState()).getChannel();
+        VoiceChannel vChan = (VoiceChannel) Objects.requireNonNull(Objects.requireNonNull(info.getAuthor().getVoiceState()).getChannel());
 
-        if(vChan == null)
-        {
-            player.stopTrack();
-
-        } else
-        {
-            info.getAuthor().getGuild().getAudioManager().openAudioConnection(vChan);
-        }
+        info.getAuthor().getGuild().getAudioManager().openAudioConnection(vChan);
     }
 
     @Override

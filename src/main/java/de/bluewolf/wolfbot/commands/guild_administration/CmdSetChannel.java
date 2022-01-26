@@ -52,7 +52,7 @@ public class CmdSetChannel implements Command
                                 "WHERE GuildId = '" + guildId + "' AND Command = '" + command + "';"
                 );
 
-                event.getChannel().sendMessage(
+                event.getChannel().sendMessageEmbeds(
                         new EmbedBuilder()
                         .setColor(Color.GREEN)
                         .setTitle("Channel established")
@@ -86,7 +86,7 @@ public class CmdSetChannel implements Command
                                     "WHERE GuildId = '" + guildId + "' AND Command = '" + command + "';"
                     );
 
-                    event.getChannel().sendMessage(
+                    event.getChannel().sendMessageEmbeds(
                             new EmbedBuilder()
                                     .setColor(Color.GREEN)
                                     .setTitle("Channel established")

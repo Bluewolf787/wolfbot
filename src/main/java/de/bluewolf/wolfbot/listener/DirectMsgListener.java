@@ -2,7 +2,8 @@ package de.bluewolf.wolfbot.listener;
 
 import de.bluewolf.wolfbot.utils.ConsoleColors;
 import de.bluewolf.wolfbot.utils.CustomMsg;
-import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.util.Random;
@@ -19,9 +20,8 @@ public class DirectMsgListener extends ListenerAdapter
 
     private static final ConsoleColors colors = new ConsoleColors();
 
-    public void onPrivateMessageReceived(PrivateMessageReceivedEvent event)
+    public void onPrivateMessageReceived(MessageReceivedEvent event)
     {
-
         String[] msgs = new String[]
                 {
                         "Hi, what's up?", "My favorite pets are cats! :cat:", "Dogs are nice! :dog:", "I want world domination!".toUpperCase(),
@@ -33,9 +33,7 @@ public class DirectMsgListener extends ListenerAdapter
 
         String receivedMsg = event.getMessage().toString().toLowerCase();
 
-        if (event.getMessage().getAuthor() == event.getJDA().getSelfUser())
-            return;
-        else
+        if (event.getChannelType() == ChannelType.PRIVATE && event.getMessage().getAuthor() != event.getJDA().getSelfUser())
         {
             System.out.println(
                     CustomMsg.INFO_PREFIX + "Received a private message: "
@@ -44,10 +42,8 @@ public class DirectMsgListener extends ListenerAdapter
             );
 
             int answer = new Random().nextInt(msgs.length);
-            event.getChannel().sendMessage(msgs[answer]).queue();
+            event.getPrivateChannel().sendMessage(msgs[answer]).queue();
         }
-
-        event.getChannel().close().queue();
 
     }
 

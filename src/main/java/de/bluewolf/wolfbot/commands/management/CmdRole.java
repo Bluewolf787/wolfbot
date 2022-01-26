@@ -62,7 +62,7 @@ public class CmdRole implements Command
                         {
                             // If the role exists and the user do not have the role already: add to member
                             guild.addRoleToMember(Objects.requireNonNull(member), fRole).queue();
-                            event.getTextChannel().sendMessage(
+                            event.getTextChannel().sendMessageEmbeds(
                                     new EmbedBuilder()
                                             .setColor(Color.CYAN)
                                             .setAuthor("Role added to " + member.getUser().getName(), null, member.getUser().getAvatarUrl())
@@ -132,7 +132,7 @@ public class CmdRole implements Command
                         {
                             // If the role exists and the user has the role already: remove to member
                             guild.removeRoleFromMember(Objects.requireNonNull(member), fRole).queue();
-                            event.getTextChannel().sendMessage(
+                            event.getTextChannel().sendMessageEmbeds(
                                     new EmbedBuilder()
                                             .setColor(Color.CYAN)
                                             .setAuthor("Role removed from " + member.getUser().getName(), null, member.getUser().getAvatarUrl())

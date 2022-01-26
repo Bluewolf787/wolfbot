@@ -104,8 +104,8 @@ public class Permissions
 
     public static void initializePermissionInformation()
     {
-        permissionInformation.put(Permission.MESSAGE_WRITE.getName(), Permission.MESSAGE_WRITE.getOffset());
-        permissionInformation.put(Permission.MESSAGE_READ.getName(), Permission.MESSAGE_READ.getOffset());
+        permissionInformation.put(Permission.MESSAGE_SEND.getName(), Permission.MESSAGE_SEND.getOffset());
+        permissionInformation.put(Permission.VIEW_CHANNEL.getName(), Permission.VIEW_CHANNEL.getOffset());
 
         CustomMsg.INFO("Initialized Permission information");
     }

@@ -37,7 +37,6 @@ public class ReadyListener extends ListenerAdapter
         {
             String guildId = guild.getId();
             String guildName = guild.getName();
-            String guildRegion = guild.getRegionRaw();
             int guildMember = guild.getMemberCount();
 
             out.append("\t").append(CustomMsg.GUILD_NAME(guildName, guildId)).append("\n\t---------------------------- \n");
@@ -61,7 +60,7 @@ public class ReadyListener extends ListenerAdapter
                         // Update available guild in Guilds table
                         DatabaseHelper.update(
                                 "UPDATE Guilds SET GuildName = '" + guildName + "', Member = " + guildMember + "," +
-                                        " Region = '" + guildRegion + "', Available = 1 WHERE GuildId = '" + guildId + "';"
+                                        "', Available = 1 WHERE GuildId = '" + guildId + "';"
                         );
                     }
 
@@ -140,7 +139,7 @@ public class ReadyListener extends ListenerAdapter
                         // Insert available guild in Guilds table
                         DatabaseHelper.update(
                                 "INSERT INTO Guilds (GuildId, GuildName, Member, Region, Available, Password) VALUES" +
-                                        " ('" + guildId + "', '" + guildName + "', "+ guildMember + ", '" + guildRegion + "', 1, '" + PasswordGenerator.generatePassword() + "');"
+                                        " ('" + guildId + "', '" + guildName + "', "+ guildMember + ", '" + "', 1, '" + PasswordGenerator.generatePassword() + "');"
                         );
                     }
 

@@ -43,7 +43,7 @@ public class CmdSettings implements Command
         event.getJDA().getPresence().setStatus(BotSettings.DOWNTIME_STATUS);
         event.getJDA().getPresence().setActivity(BotSettings.RESTART_ACTIVITY);
 
-        event.getTextChannel().sendMessage(
+        event.getTextChannel().sendMessageEmbeds(
                 new EmbedBuilder()
                         .setColor(Color.ORANGE)
                         .setDescription(
@@ -58,7 +58,7 @@ public class CmdSettings implements Command
             @Override
             public void run()
             {
-                event.getTextChannel().sendMessage(
+                event.getTextChannel().sendMessageEmbeds(
                         new EmbedBuilder()
                                 .setColor(Color.ORANGE)
                                 .setDescription(
@@ -103,7 +103,7 @@ public class CmdSettings implements Command
         event.getJDA().getPresence().setStatus(BotSettings.DOWNTIME_STATUS);
         event.getJDA().getPresence().setActivity(BotSettings.STOP_ACTIVITY);
 
-        event.getTextChannel().sendMessage(
+        event.getTextChannel().sendMessageEmbeds(
                 new EmbedBuilder()
                         .setColor(Color.RED)
                         .setDescription(
@@ -118,7 +118,7 @@ public class CmdSettings implements Command
             @Override
             public void run()
             {
-                event.getTextChannel().sendMessage(
+                event.getTextChannel().sendMessageEmbeds(
                         new EmbedBuilder()
                                 .setColor(Color.RED)
                                 .setDescription(

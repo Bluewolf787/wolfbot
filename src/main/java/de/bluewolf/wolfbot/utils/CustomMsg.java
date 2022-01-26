@@ -58,7 +58,7 @@ public class CustomMsg
      */
     public static void CMD_INFO(MessageReceivedEvent event, String command, String infoMessage)
     {
-        event.getTextChannel().sendMessage(
+        event.getTextChannel().sendMessageEmbeds(
                 new EmbedBuilder()
                         .setColor(Color.YELLOW)
                         .setDescription(infoMessage)
@@ -80,7 +80,7 @@ public class CustomMsg
      */
     public static void NO_PERM(MessageReceivedEvent event, String command)
     {
-        event.getTextChannel().sendMessage(
+        event.getTextChannel().sendMessageEmbeds(
                 new EmbedBuilder()
                         .setColor(Color.RED)
                         .setDescription(
@@ -119,7 +119,7 @@ public class CustomMsg
      */
     public static void CMD_ERROR(MessageReceivedEvent event, String command, String errorMessage)
     {
-        event.getTextChannel().sendMessage(
+        event.getTextChannel().sendMessageEmbeds(
                 new EmbedBuilder()
                         .setColor(Color.RED)
                         .setDescription(errorMessage)
@@ -155,7 +155,7 @@ public class CustomMsg
      */
     public static void WRONG_CHANNEL(TextChannel usedChannel, TextChannel providedChannel, String command)
     {
-        usedChannel.sendMessage(
+        usedChannel.sendMessageEmbeds(
                 new EmbedBuilder()
                 .setColor(Color.RED)
                 .setTitle("Tried to perform a command in the wrong channel")
@@ -175,7 +175,7 @@ public class CustomMsg
      */
     public static void HELP_MSG(MessageReceivedEvent event, String helpMessage)
     {
-        event.getTextChannel().sendMessage(
+        event.getTextChannel().sendMessageEmbeds(
                 new EmbedBuilder()
                         .setColor(new Color(0xdf1196))
                         .setTitle("Command Help")
@@ -192,7 +192,7 @@ public class CustomMsg
      */
     public static void UNKNOWN_CMD(MessageReceivedEvent event, String cmd)
     {
-        event.getTextChannel().sendMessage(
+        event.getTextChannel().sendMessageEmbeds(
                 new EmbedBuilder()
                         .setColor(Color.RED)
                         .setDescription("Can not find the command ``" + cmd + "``")
@@ -234,7 +234,7 @@ public class CustomMsg
     public static void sendPrivateEmbedMessage(User user, MessageEmbed directMessage)
     {
         user.openPrivateChannel()
-                .flatMap(channel -> channel.sendMessage(directMessage))
+                .flatMap(channel -> channel.sendMessageEmbeds(directMessage))
                 .queue();
     }
 

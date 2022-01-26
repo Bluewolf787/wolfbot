@@ -24,7 +24,7 @@ public class CmdNews implements Command {
     public void action(String[] args, MessageReceivedEvent event) throws ParseException, IOException
     {
 
-        event.getTextChannel().sendMessage(
+        event.getTextChannel().sendMessageEmbeds(
                 new EmbedBuilder()
                         .setColor(Color.YELLOW)
                         .setDescription(

@@ -59,7 +59,7 @@ public class ModerationUtil
 
         CustomMsg.sendPrivateMessage(target, "You got banned from " + guild.getName() + " for " + reason + ".");
 
-        event.getTextChannel().sendMessage(
+        event.getTextChannel().sendMessageEmbeds(
                 new EmbedBuilder()
                         .setColor(Color.RED)
                         .setAuthor("Banned " + target.getName() + "!", null, target.getAvatarUrl())
@@ -114,7 +114,7 @@ public class ModerationUtil
 
             guild.unban(target).queue();
 
-            event.getTextChannel().sendMessage(
+            event.getTextChannel().sendMessageEmbeds(
                     new EmbedBuilder()
                             .setColor(Color.GREEN)
                             .setAuthor("Unbanned " + target.getName() + "!", null, target.getAvatarUrl())
@@ -186,7 +186,7 @@ public class ModerationUtil
 
         guild.kick(targetId, reason).queue();
 
-        event.getTextChannel().sendMessage(
+        event.getTextChannel().sendMessageEmbeds(
                 new EmbedBuilder()
                         .setColor(Color.RED)
                         .setAuthor("Kicked " + target.getName() + "!", null, target.getAvatarUrl())

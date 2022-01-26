@@ -34,7 +34,7 @@ public class CmdGame implements Command
                     // Add role to member
                     guild.addRoleToMember(member, guild.getRolesByName(role, true).get(0)).queue();
 
-                    event.getTextChannel().sendMessage(
+                    event.getTextChannel().sendMessageEmbeds(
                             new EmbedBuilder()
                                     .setColor(Color.WHITE)
                                     .setAuthor("Game role added to " + member.getUser().getName(), null, member.getUser().getAvatarUrl())
@@ -51,7 +51,7 @@ public class CmdGame implements Command
                     // Remove role from member
                     guild.removeRoleFromMember(member, guild.getRolesByName(role, true).get(0)).queue();
 
-                    event.getTextChannel().sendMessage(
+                    event.getTextChannel().sendMessageEmbeds(
                             new EmbedBuilder()
                                     .setColor(Color.WHITE)
                                     .setAuthor("Game role removed from " + member.getUser().getName(), null, member.getUser().getAvatarUrl())

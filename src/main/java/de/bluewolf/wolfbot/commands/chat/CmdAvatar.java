@@ -45,7 +45,7 @@ public class CmdAvatar implements Command
                 // Get the avatar URL
                 String avatarURL = member.getUser().getAvatarUrl();
                 // Send message
-                event.getChannel().sendMessage(
+                event.getChannel().sendMessageEmbeds(
                         new EmbedBuilder()
                         .setColor(Color.MAGENTA)
                         .setTitle("Avatar URL of " + member.getUser().getName())

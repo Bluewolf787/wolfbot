@@ -44,7 +44,7 @@ public class CmdSetPermission implements Command
                 permissionInfoMessage.append(" - ").append(i).append("\n");
             }
 
-            event.getChannel().sendMessage(
+            event.getChannel().sendMessageEmbeds(
                     new EmbedBuilder()
                     .setColor(new Color(0xdf1196))
                     .setTitle("Available Command Permissions")
@@ -74,7 +74,7 @@ public class CmdSetPermission implements Command
 
                     // TODO Change permission in Permissions table
 
-                    event.getChannel().sendMessage(
+                    event.getChannel().sendMessageEmbeds(
                             new EmbedBuilder()
                             .setColor(Color.GREEN)
                             .setTitle("Set new permission for command")

@@ -64,7 +64,7 @@ public class CmdClear implements Command
                     msgs = history.retrievePast(num).complete();
                     event.getTextChannel().deleteMessages(msgs).queue();
 
-                    Message msgDelete = event.getTextChannel().sendMessage(
+                    Message msgDelete = event.getTextChannel().sendMessageEmbeds(
                             new EmbedBuilder()
                                     .setColor(Color.GREEN)
                                     .setDescription(

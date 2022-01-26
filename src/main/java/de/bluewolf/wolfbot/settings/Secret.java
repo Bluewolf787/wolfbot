@@ -10,10 +10,10 @@ public class Secret
     public static String ID = "SECRET";
 
     // <- DATABASE -> //
-    public static int DB_PORT = 0000;
+    public static int DB_PORT = 3306;
     public static String DB_DATABASE = "DB";
     public static String DB_HOST = "HOST";
     public static String DB_USER = "USER";
-    public static String DB_PASSWORD = "PASSWORD";
+    public static String DB_PASSWORD = "PASSWD";
 
 }

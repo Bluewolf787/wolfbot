@@ -178,17 +178,17 @@ public class CmdBot implements Command
             switch (args[0])
             {
                 case "uptime":
-                    channel.sendMessage(uptimeMessage()).queue();
+                    channel.sendMessageEmbeds(uptimeMessage()).queue();
                     executed(true, event);
                     break;
 
                 case "info":
-                    channel.sendMessage(infoMessage(event)).queue();
+                    channel.sendMessageEmbeds(infoMessage(event)).queue();
                     executed(true, event);
                     break;
 
                 case "guilds":
-                    channel.sendMessage(guildsMessage(event)).queue();
+                    channel.sendMessageEmbeds(guildsMessage(event)).queue();
                     executed(true, event);
                     break;
 

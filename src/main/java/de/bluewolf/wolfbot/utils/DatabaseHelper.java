@@ -87,7 +87,6 @@ public class DatabaseHelper
                                 + "(`GuildId` varchar(20) NOT NULL PRIMARY KEY UNIQUE, "
                                 + "`GuildName` varchar(50), "
                                 + "`Member` int, "
-                                + "`Region` varchar(15), "
                                 + "`Available` tinyint(1)  NOT NULL, "
                                 + "`Password` varchar(10) NOT NULL);"
                 );
